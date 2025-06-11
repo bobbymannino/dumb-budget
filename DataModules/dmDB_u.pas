@@ -65,6 +65,7 @@ var
   AppDataPath: string;
   AppFolder: string;
 begin
+  { TODO : Add path for macOS }
   AppDataPath := GetEnvironmentVariable('LOCALAPPDATA');
 
   if AppDataPath = '' then
@@ -95,9 +96,15 @@ begin
       'TransactionID INTEGER PRIMARY KEY AUTOINCREMENT,' +
       'Title TEXT NOT NULL UNIQUE,' + 'Amount REAL NOT NULL,' +
       'Quantity INTEGER NOT NULL,' +
-      'Unit TEXT NOT NULL CHECK (Unit IN (''DAY'', ''WEEK'', ''FORTNIGHT'', ''MONTH'', ''YEAR'')),' +
-      'CategoryID INTEGER NOT NULL REFERENCES Categories (CategoryID),' +
+      'Unit TEXT NOT NULL CHECK (Unit IN (''DAY'', ''WEEK'', ''FORTNIGHT'', ''MONTH'', ''YEAR'')),'
+      + 'CategoryID INTEGER NOT NULL REFERENCES Categories (CategoryID),' +
       'CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP' + ')';
+    qryDB.ExecSQL;
+
+    qryDB.SQL.Text := 'CREATE VIEW IF NOT EXISTS TransactionsPlus AS ' +
+      'SELECT t.*, c.Title as Category, c.CategoryID, c.Type ' +
+      'FROM Transactions t ' +
+      'JOIN Categories c on c.CategoryID = t.CategoryID';
     qryDB.ExecSQL;
   except
     on e: Exception do
