@@ -3,17 +3,22 @@ unit dmDB_u;
 interface
 
 uses
-  System.SysUtils, System.Classes, Data.DB, Data.Win.ADODB, FMX.Dialogs;
+  System.SysUtils, System.Classes, Data.DB, Data.Win.ADODB, FMX.Dialogs,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
+  FireDAC.Phys, FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef,
+  FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
 
 type
   TdmDB = class(TDataModule)
-    conn: TADOConnection;
-    qry: TADOQuery;
+    connDB: TFDConnection;
+    qryDB: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
-    function GetConnectionString: string;
     function GetDatabasePath: string;
     procedure CreateTables;
   public
@@ -30,23 +35,29 @@ implementation
 
 procedure TdmDB.DataModuleCreate(Sender: TObject);
 begin
-  conn.ConnectionString := GetConnectionString;
-  conn.LoginPrompt := False;
+  connDB.Params.Clear;
+  connDB.Params.Add('Database=' + GetDatabasePath);
+  connDB.Params.Add('DriverID=SQLite');
 
   try
-    conn.Connected := True;
+    connDB.Connected := True;
+  except
+    on e: Exception do
+      ShowMessage('Failed to connect to the database');
+  end;
 
+  try
     CreateTables;
   except
     on e: Exception do
-      ShowMessage('Failed to create tables');
+      ShowMessage(e.Message);
   end;
 end;
 
 procedure TdmDB.DataModuleDestroy(Sender: TObject);
 begin
-  qry.Close;
-  conn.Close;
+  qryDB.Close;
+  connDB.Close;
 end;
 
 function TdmDB.GetDatabasePath: string;
@@ -70,35 +81,24 @@ begin
   Result := Result + 'Database.db';
 end;
 
-function TdmDB.GetConnectionString: string;
-var
-  DatabasePath: string;
-begin
-  DatabasePath := GetDatabasePath;
-
-  Result := Format
-    ('Provider=MSDASQL.1;Extended Properties="Driver=SQLite3 ODBC Driver;Database=%s;StepAPI=0;SyncPragma=NORMAL;NoTXN=0;Timeout=100000;ShortNames=0;LongNames=0;NoCreat=0;NoWCHAR=0;FKSupport=0;JournalMode=WAL;OEMCP=0;LoadExt=;BigInt=0;JDConv=0;"',
-    [DatabasePath]);
-end;
-
 procedure TdmDB.CreateTables;
 begin
   try
-    qry.SQL.Text := 'CREATE TABLE IF NOT EXISTS Categories (' +
+    qryDB.SQL.Text := 'CREATE TABLE IF NOT EXISTS Categories (' +
       'CategoryID INTEGER PRIMARY KEY AUTOINCREMENT,' +
       'Title TEXT NOT NULL UNIQUE,' +
-      'Type TEXT CHECK (Text IN (''IN'', ''OUT'')),' +
+      'Type TEXT CHECK (Type IN (''IN'', ''OUT'')),' +
       'CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP' + ')';
-    qry.ExecSQL;
+    qryDB.ExecSQL;
 
-    qry.SQL.Text := 'CREATE TABLE IF NOT EXISTS Transactions (' +
+    qryDB.SQL.Text := 'CREATE TABLE IF NOT EXISTS Transactions (' +
       'TransactionID INTEGER PRIMARY KEY AUTOINCREMENT,' +
       'Title TEXT NOT NULL UNIQUE,' + 'Amount REAL NOT NULL,' +
       'Quantity INTEGER NOT NULL,' +
-      'Unit TEXT NOT NULL CHECK (Unit IN (''DAY'', ''WEEK'', ''FORTNIGHT'', ''MONTH'', ''YEAR'')),'
-      + 'CategoryID INTEGER NOT NULL REFERENCES Categories (CategoryID),' +
+      'Unit TEXT NOT NULL CHECK (Unit IN (''DAY'', ''WEEK'', ''FORTNIGHT'', ''MONTH'', ''YEAR'')),' +
+      'CategoryID INTEGER NOT NULL REFERENCES Categories (CategoryID),' +
       'CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP' + ')';
-    qry.ExecSQL;
+    qryDB.ExecSQL;
   except
     on e: Exception do
       raise Exception.create('Error creating tables: ' + e.Message);

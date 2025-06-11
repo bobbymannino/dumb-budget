@@ -4,14 +4,16 @@ object dmDB: TdmDB
   Height = 1920
   Width = 2560
   PixelsPerInch = 192
-  object conn: TADOConnection
-    Left = 200
-    Top = 136
+  object connDB: TFDConnection
+    Params.Strings = (
+      'DriverID=SQLite')
+    LoginPrompt = False
+    Left = 176
+    Top = 104
   end
-  object qry: TADOQuery
-    Connection = conn
-    Parameters = <>
-    Left = 416
-    Top = 144
+  object qryDB: TFDQuery
+    Connection = connDB
+    Left = 456
+    Top = 128
   end
 end
