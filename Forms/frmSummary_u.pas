@@ -4,10 +4,14 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs;
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  dmDB_u, System.Rtti, FMX.Grid.Style, FMX.StdCtrls, FMX.Controls.Presentation,
+  FMX.ScrollBox, FMX.Grid;
 
 type
-  TForm1 = class(TForm)
+  TfrmSummary = class(TForm)
+    grdTransactions: TGrid;
+    lblTitle: TLabel;
   private
     { Private declarations }
   public
@@ -15,7 +19,7 @@ type
   end;
 
 var
-  Form1: TForm1;
+  frmSummary: TfrmSummary;
 
 implementation
 
