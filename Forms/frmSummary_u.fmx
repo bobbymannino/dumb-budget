@@ -7,20 +7,8 @@ object frmSummary: TfrmSummary
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
   DesignerMasterStyle = 0
-  object grdExpenses: TGrid
-    Anchors = [akLeft, akTop, akRight]
-    CanFocus = True
-    ClipChildren = True
-    Position.X = 8.000000000000000000
-    Position.Y = 33.000000000000000000
-    Size.Width = 542.000000000000000000
-    Size.Height = 240.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 1
-    Viewport.Width = 538.000000000000000000
-    Viewport.Height = 215.000000000000000000
-  end
   object lblExpenses: TLabel
     Anchors = [akLeft, akTop, akRight]
     Position.X = 8.000000000000000000
@@ -29,7 +17,7 @@ object frmSummary: TfrmSummary
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Expenses'
-    TabOrder = 3
+    TabOrder = 1
   end
   object lblIncomes: TLabel
     Anchors = [akLeft, akTop, akRight]
@@ -39,10 +27,23 @@ object frmSummary: TfrmSummary
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Incomes'
-    TabOrder = 2
+    TabOrder = 0
   end
-  object grdIncomes: TGrid
-    Anchors = [akLeft, akTop, akRight, akBottom]
+  object strGrdExpenses: TStringGrid
+    Anchors = [akLeft, akTop, akRight]
+    CanFocus = True
+    ClipChildren = True
+    Position.X = 8.000000000000000000
+    Position.Y = 33.000000000000000000
+    Size.Width = 542.000000000000000000
+    Size.Height = 240.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    Viewport.Width = 538.000000000000000000
+    Viewport.Height = 215.000000000000000000
+  end
+  object strGrdIncomes: TStringGrid
+    Anchors = [akLeft, akTop, akRight]
     CanFocus = True
     ClipChildren = True
     Position.X = 8.000000000000000000
@@ -50,7 +51,7 @@ object frmSummary: TfrmSummary
     Size.Width = 542.000000000000000000
     Size.Height = 136.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 0
+    TabOrder = 2
     Viewport.Width = 538.000000000000000000
     Viewport.Height = 111.000000000000000000
   end

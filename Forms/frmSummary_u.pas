@@ -3,19 +3,24 @@ unit frmSummary_u;
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  System.SysUtils, System.Types, System.UITypes, System.Classes,
+  System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  dmDB_u, System.Rtti, FMX.Grid.Style, FMX.StdCtrls, FMX.Controls.Presentation,
-  FMX.ScrollBox, FMX.Grid;
+  System.Rtti, FMX.Grid.Style, FMX.StdCtrls, FMX.Controls.Presentation,
+  FMX.ScrollBox, FMX.Grid,
+  Data.DB,
+  dmDB_u, FMX.ExtCtrls;
 
 type
   TfrmSummary = class(TForm)
-    grdExpenses: TGrid;
     lblExpenses: TLabel;
     lblIncomes: TLabel;
-    grdIncomes: TGrid;
+    strGrdExpenses: TStringGrid;
+    strGrdIncomes: TStringGrid;
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
+    procedure SetupExpenses;
   public
     { Public declarations }
   end;
@@ -26,5 +31,50 @@ var
 implementation
 
 {$R *.fmx}
+
+procedure TfrmSummary.FormCreate(Sender: TObject);
+begin
+  SetupExpenses;
+end;
+
+procedure TfrmSummary.SetupExpenses;
+var
+  Row: Integer;
+  fTitleCol: TStringColumn;
+begin
+  if not Assigned(dmDB) then
+    dmDB := TdmDB.Create(Self);
+
+  dmDB.qryDB.SQL.Text := 'SELECT * FROM TransactionsPlus ' +
+    'WHERE Type = '':Type''';
+  dmDB.qryDB.ParamByName('Type').AsString := 'OUT';
+  dmDB.qryDB.Open;
+
+  strGrdExpenses.BeginUpdate;
+
+  try
+    strGrdExpenses.ClearColumns;
+
+    fTitleCol := TStringColumn.Create(strGrdExpenses);
+    fTitleCol.Header := 'Title';
+    fTitleCol.Width := 200;
+    strGrdExpenses.AddObject(fTitleCol);
+
+    strGrdExpenses.RowCount := dmDB.qryDB.RecordCount;
+
+    Row := 1;
+    dmDB.qryDB.First;
+
+    while not dmDB.qryDB.Eof do
+    begin
+      strGrdExpenses.Cells[0, Row] := dmDB.qryDB.FieldByName('Title').AsString;
+
+      Inc(Row);
+      dmDB.qryDB.Next;
+    end;
+  finally
+    strGrdExpenses.EndUpdate;
+  end;
+end;
 
 end.
