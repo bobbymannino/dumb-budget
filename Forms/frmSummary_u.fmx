@@ -2,33 +2,56 @@ object frmSummary: TfrmSummary
   Left = 0
   Top = 0
   Caption = 'Dumb Budget - Summary'
-  ClientHeight = 486
-  ClientWidth = 562
+  ClientHeight = 450
+  ClientWidth = 558
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   DesignerMasterStyle = 0
-  object grdTransactions: TGrid
-    Anchors = [akLeft, akTop, akRight, akBottom]
+  object grdExpenses: TGrid
+    Anchors = [akLeft, akTop, akRight]
     CanFocus = True
     ClipChildren = True
     Position.X = 8.000000000000000000
     Position.Y = 33.000000000000000000
-    Size.Width = 546.000000000000000000
-    Size.Height = 445.000000000000000000
+    Size.Width = 542.000000000000000000
+    Size.Height = 240.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 0
-    Viewport.Width = 542.000000000000000000
-    Viewport.Height = 420.000000000000000000
+    TabOrder = 1
+    Viewport.Width = 538.000000000000000000
+    Viewport.Height = 215.000000000000000000
   end
-  object lblTitle: TLabel
+  object lblExpenses: TLabel
     Anchors = [akLeft, akTop, akRight]
     Position.X = 8.000000000000000000
     Position.Y = 8.000000000000000000
-    Size.Width = 546.000000000000000000
+    Size.Width = 542.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
-    Text = 'Summary'
-    TabOrder = 1
+    Text = 'Expenses'
+    TabOrder = 3
+  end
+  object lblIncomes: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 8.000000000000000000
+    Position.Y = 281.000000000000000000
+    Size.Width = 558.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Incomes'
+    TabOrder = 2
+  end
+  object grdIncomes: TGrid
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    CanFocus = True
+    ClipChildren = True
+    Position.X = 8.000000000000000000
+    Position.Y = 306.000000000000000000
+    Size.Width = 542.000000000000000000
+    Size.Height = 136.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Viewport.Width = 538.000000000000000000
+    Viewport.Height = 111.000000000000000000
   end
 end

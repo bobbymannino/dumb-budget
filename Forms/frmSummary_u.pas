@@ -10,8 +10,10 @@ uses
 
 type
   TfrmSummary = class(TForm)
-    grdTransactions: TGrid;
-    lblTitle: TLabel;
+    grdExpenses: TGrid;
+    lblExpenses: TLabel;
+    lblIncomes: TLabel;
+    grdIncomes: TGrid;
   private
     { Private declarations }
   public
