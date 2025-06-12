@@ -34,6 +34,8 @@ implementation
 
 procedure TfrmSummary.FormCreate(Sender: TObject);
 begin
+  BorderIcons := BorderIcons - [TBorderIcon.biMaximize];
+
   SetupExpenses;
 end;
 
@@ -45,8 +47,8 @@ begin
   if not Assigned(dmDB) then
     dmDB := TdmDB.Create(Self);
 
-  dmDB.qryDB.SQL.Text := 'SELECT * FROM TransactionsPlus ' +
-    'WHERE Type = '':Type''';
+  dmDB.qryDB.SQL.Text := 'SELECT Title FROM TransactionsPlus ' +
+    'WHERE Type = :Type';
   dmDB.qryDB.ParamByName('Type').AsString := 'OUT';
   dmDB.qryDB.Open;
 
