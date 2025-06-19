@@ -5,11 +5,12 @@ interface
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes,
   System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.ExtCtrls,
   System.Rtti, FMX.Grid.Style, FMX.StdCtrls, FMX.Controls.Presentation,
   FMX.ScrollBox, FMX.Grid,
   Data.DB,
-  dmDB_u, FMX.ExtCtrls;
+  dmDB_u,
+  frmNew_u;
 
 type
   TfrmSummary = class(TForm)
@@ -17,7 +18,9 @@ type
     lblIncomes: TLabel;
     strGrdExpenses: TStringGrid;
     strGrdIncomes: TStringGrid;
+    btnNew: TButton;
     procedure FormCreate(Sender: TObject);
+    procedure btnNewClick(Sender: TObject);
   private
     { Private declarations }
     procedure SetupExpenses;
@@ -32,10 +35,16 @@ implementation
 
 {$R *.fmx}
 
+procedure TfrmSummary.btnNewClick(Sender: TObject);
+var
+  fFrmNew: TfrmNew;
+begin
+  fFrmNew := TfrmNew.Create(Self);
+  frmNew.Show;
+end;
+
 procedure TfrmSummary.FormCreate(Sender: TObject);
 begin
-  BorderIcons := BorderIcons - [TBorderIcon.biMaximize];
-
   SetupExpenses;
 end;
 

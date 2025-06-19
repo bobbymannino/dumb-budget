@@ -1,9 +1,10 @@
 object frmSummary: TfrmSummary
   Left = 0
   Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = Single
   Caption = 'Dumb Budget - Summary'
-  ClientHeight = 580
+  ClientHeight = 480
   ClientWidth = 690
   Position = DesktopCenter
   FormFactor.Width = 320
@@ -53,8 +54,19 @@ object frmSummary: TfrmSummary
     Size.Width = 674.000000000000000000
     Size.Height = 136.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 4
+    TabOrder = 3
     Viewport.Width = 670.000000000000000000
     Viewport.Height = 111.000000000000000000
+  end
+  object btnNew: TButton
+    Position.X = 536.000000000000000000
+    Position.Y = 450.000000000000000000
+    Size.Width = 146.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    Text = 'New Income/Expense'
+    TextSettings.Trimming = None
+    OnClick = btnNewClick
   end
 end
