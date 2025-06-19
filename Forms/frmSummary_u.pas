@@ -10,7 +10,7 @@ uses
   FMX.ScrollBox, FMX.Grid,
   Data.DB,
   dmDB_u,
-  frmNew_u;
+  frmNew_u, frmCategories_u;
 
 type
   TfrmSummary = class(TForm)
@@ -19,8 +19,10 @@ type
     strGrdExpenses: TStringGrid;
     strGrdIncomes: TStringGrid;
     btnNew: TButton;
+    btnCats: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnNewClick(Sender: TObject);
+    procedure btnCatsClick(Sender: TObject);
   private
     { Private declarations }
     procedure SetupExpenses;
@@ -35,12 +37,20 @@ implementation
 
 {$R *.fmx}
 
+procedure TfrmSummary.btnCatsClick(Sender: TObject);
+var
+  fFrm: TForm;
+begin
+  fFrm := TfrmCategories.Create(Self);
+  fFrm.Show;
+end;
+
 procedure TfrmSummary.btnNewClick(Sender: TObject);
 var
-  fFrmNew: TfrmNew;
+  fFrm: TfrmNew;
 begin
-  fFrmNew := TfrmNew.Create(Self);
-  frmNew.Show;
+  fFrm := TfrmNew.Create(Self);
+  fFrm.Show;
 end;
 
 procedure TfrmSummary.FormCreate(Sender: TObject);

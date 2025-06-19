@@ -5,7 +5,8 @@ uses
   FMX.Forms,
   frmSummary_u in 'Forms\frmSummary_u.pas' {frmSummary},
   dmDB_u in 'DataModules\dmDB_u.pas' {dmDB: TDataModule},
-  frmNew_u in 'Forms\frmNew_u.pas' {frmNew};
+  frmNew_u in 'Forms\frmNew_u.pas' {frmNew},
+  frmCategories_u in 'Forms\frmCategories_u.pas' {frmCategories};
 
 {$R *.res}
 
@@ -14,5 +15,6 @@ begin
   Application.CreateForm(TfrmSummary, frmSummary);
   Application.CreateForm(TdmDB, dmDB);
   Application.CreateForm(TfrmNew, frmNew);
+  Application.CreateForm(TfrmCategories, frmCategories);
   Application.Run;
 end.

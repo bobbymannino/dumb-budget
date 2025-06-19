@@ -161,6 +161,10 @@
             <Form>frmNew</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="Forms\frmCategories_u.pas">
+            <Form>frmCategories</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
