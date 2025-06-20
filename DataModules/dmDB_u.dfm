@@ -9,19 +9,12 @@ object dmDB: TdmDB
       'DriverID=SQLite')
     Connected = True
     LoginPrompt = False
-    Left = 176
-    Top = 104
+    Left = 100
+    Top = 100
   end
   object qryDB: TFDQuery
     Connection = connDB
-    Left = 456
-    Top = 128
-  end
-  object tblCategories: TFDTable
-    Connection = connDB
-    ResourceOptions.AssignedValues = [rvEscapeExpand]
-    TableName = 'Categories'
-    Left = 176
-    Top = 288
+    Left = 300
+    Top = 100
   end
 end

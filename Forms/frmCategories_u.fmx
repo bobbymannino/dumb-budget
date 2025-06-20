@@ -4,20 +4,103 @@ object frmCategories: TfrmCategories
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = Single
   Caption = 'Dumb Budget - Categories'
-  ClientHeight = 480
-  ClientWidth = 362
+  ClientHeight = 435
+  ClientWidth = 564
+  Position = DesktopCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
   DesignerMasterStyle = 0
   object lblFormTitle: TLabel
     Anchors = [akLeft, akTop, akRight]
     Position.X = 8.000000000000000000
     Position.Y = 8.000000000000000000
-    Size.Width = 346.000000000000000000
+    Size.Width = 548.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Categories'
     TabOrder = 0
+  end
+  object strGrdCats: TStringGrid
+    Anchors = [akLeft, akTop, akRight]
+    CanFocus = True
+    ClipChildren = True
+    Position.X = 8.000000000000000000
+    Position.Y = 33.000000000000000000
+    Size.Width = 548.000000000000000000
+    Size.Height = 224.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Options = [ColumnResize, ColumnMove, ColLines, RowLines, Tabs, Header, HeaderClick, AutoDisplacement]
+    Viewport.Width = 544.000000000000000000
+    Viewport.Height = 199.000000000000000000
+  end
+  object slctType: TComboBox
+    Anchors = [akLeft, akTop, akRight]
+    Items.Strings = (
+      'Expense'
+      'Income')
+    ItemIndex = 0
+    Position.X = 8.000000000000000000
+    Position.Y = 345.000000000000000000
+    Size.Width = 548.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+  end
+  object lblTitle: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 8.000000000000000000
+    Position.Y = 265.000000000000000000
+    Size.Width = 548.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Title'
+    TabOrder = 2
+  end
+  object inpTitle: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 3
+    Position.X = 8.000000000000000000
+    Position.Y = 290.000000000000000000
+    Size.Width = 548.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object btnAdd: TButton
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 8.000000000000000000
+    Position.Y = 375.000000000000000000
+    Size.Width = 548.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    Text = 'Add'
+    TextSettings.Trimming = None
+    OnClick = btnAddClick
+  end
+  object lblType: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 8.000000000000000000
+    Position.Y = 320.000000000000000000
+    Size.Width = 548.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Type'
+    TabOrder = 4
+  end
+  object btnClose: TButton
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 8.000000000000000000
+    Position.Y = 405.000000000000000000
+    Size.Width = 548.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 7
+    Text = 'Close'
+    TextSettings.Trimming = None
+    OnClick = btnCloseClick
   end
 end

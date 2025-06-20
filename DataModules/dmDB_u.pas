@@ -15,7 +15,6 @@ type
   TdmDB = class(TDataModule)
     connDB: TFDConnection;
     qryDB: TFDQuery;
-    tblCategories: TFDTable;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private

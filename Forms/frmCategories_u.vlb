@@ -1,0 +1,15 @@
+﻿[lblFormTitle]
+Coordinates=97,10,73,51
+
+[strGrdCats]
+Coordinates=10,10,68,51
+
+[]
+Coordinates=82,77,91,36
+
+[dmDB.tblCategories]
+Coordinates=189,1,113,51
+
+[dmDB.qryDB]
+Coordinates=97,80,78,51
+
