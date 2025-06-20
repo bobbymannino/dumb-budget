@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  objCategory_u;
+  objCategory_u, objTransaction_u;
 
 type
   TdmDB = class(TDataModule)
@@ -24,6 +24,7 @@ type
     procedure CreateTables;
   public
     { Public declarations }
+    procedure CreateTransaction(const aTns: TTransaction);
     procedure CreateCategory(const aCat: TCategory);
     function GetCategories: TCategories;
   end;
@@ -166,6 +167,18 @@ begin
     on e: Exception do
       raise Exception.Create('Error creating tables: ' + e.Message);
   end;
+end;
+
+procedure TdmDB.CreateTransaction(const aTns: TTransaction);
+begin
+  qryDB.SQL.Text :=
+    'INSERT INTO Transactions (Title, CategoryID, Unit, Frequency) VALUES (:Title, :CatID, :Unit, :Freq)';
+  qryDB.ParamByName('Title').AsString := aTns.Title;
+  qryDB.ParamByName('CatID').AsInteger := aTns.CatID;
+  qryDB.ParamByName('Freq').AsInteger := aTns.FreqQuantity;
+  { TODO : Add freq unit here }
+
+  qryDB.ExecSQL;
 end;
 
 end.
