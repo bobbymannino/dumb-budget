@@ -7,7 +7,8 @@ uses
   dmDB_u in 'DataModules\dmDB_u.pas' {dmDB: TDataModule},
   frmNew_u in 'Forms\frmNew_u.pas' {frmNew},
   frmCategories_u in 'Forms\frmCategories_u.pas' {frmCategories},
-  objCategory_u in 'Objects\objCategory_u.pas';
+  objCategory_u in 'Objects\objCategory_u.pas',
+  objTransaction_u in 'Objects\objTransaction_u.pas';
 
 {$R *.res}
 

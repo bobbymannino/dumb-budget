@@ -195,6 +195,7 @@
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="Objects\objCategory_u.pas"/>
+        <DCCReference Include="Objects\objTransaction_u.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
