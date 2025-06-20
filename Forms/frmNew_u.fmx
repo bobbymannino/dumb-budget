@@ -6,6 +6,7 @@ object frmNew: TfrmNew
   Caption = 'Dumb Budget - New Expense/Income'
   ClientHeight = 378
   ClientWidth = 436
+  Position = DesktopCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]

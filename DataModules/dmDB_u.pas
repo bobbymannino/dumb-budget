@@ -15,6 +15,7 @@ type
   TdmDB = class(TDataModule)
     connDB: TFDConnection;
     qryDB: TFDQuery;
+    tblCategories: TFDTable;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
   private
@@ -23,6 +24,7 @@ type
     procedure CreateTables;
   public
     { Public declarations }
+    procedure CreateCategory(const aTitle: string; const aIsIncome: boolean);
   end;
 
 var
@@ -80,6 +82,23 @@ begin
     ForceDirectories(Result);
 
   Result := Result + 'Database.db';
+end;
+
+procedure TdmDB.CreateCategory(const aTitle: string; const aIsIncome: boolean);
+var
+  fType: string;
+begin
+  if aIsIncome then
+    fType := 'IN'
+  else
+    fType := 'OUT';
+
+  qryDB.SQL.Text :=
+    'INSERT INTO Categories (Title, Type) VALUES (:Title, :Type)';
+  qryDB.ParamByName('Title').AsString := aTitle;
+  qryDB.ParamByName('Type').AsString := fType;
+
+  qryDB.ExecSQL;
 end;
 
 procedure TdmDB.CreateTables;
