@@ -24,7 +24,7 @@ type
     procedure CreateTables;
   public
     { Public declarations }
-    procedure CreateCategory(const aTitle: string; const aIsIncome: boolean);
+    procedure CreateCategory(const aCat: TCategory);
     function GetCategories: TCategories;
   end;
 
@@ -121,18 +121,18 @@ begin
   Result := Result + 'Database.db';
 end;
 
-procedure TdmDB.CreateCategory(const aTitle: string; const aIsIncome: boolean);
+procedure TdmDB.CreateCategory(const aCat: TCategory);
 var
   fType: string;
 begin
-  if aIsIncome then
+  if aCat.CatType = TCategoryType.Income then
     fType := 'IN'
   else
     fType := 'OUT';
 
   qryDB.SQL.Text :=
     'INSERT INTO Categories (Title, Type) VALUES (:Title, :Type)';
-  qryDB.ParamByName('Title').AsString := aTitle;
+  qryDB.ParamByName('Title').AsString := aCat.Title;
   qryDB.ParamByName('Type').AsString := fType;
 
   qryDB.ExecSQL;

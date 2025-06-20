@@ -43,21 +43,23 @@ implementation
 
 procedure TfrmCategories.btnAddClick(Sender: TObject);
 var
-  fIsIncome: Boolean;
-  fTitle: string;
+  fCat: TCategory;
 begin
-  fTitle := inpTitle.Text.Trim;
-  if fTitle = EmptyStr then
+  fCat.Title := inpTitle.Text.Trim;
+  if fCat.Title = EmptyStr then
   begin
     ShowMessage('Title is invalid');
     inpTitle.SetFocus;
     Exit;
   end;
 
-  fIsIncome := slctType.Items[slctType.ItemIndex] = 'Income';
+  if slctType.Items[slctType.ItemIndex] = 'Income' then
+    fCat.CatType := TCategoryType.Income
+  else
+    fCat.CatType := TCategoryType.Expense;
 
   try
-    dmDB.CreateCategory(fTitle, fIsIncome);
+    dmDB.CreateCategory(fCat);
 
     inpTitle.Text := '';
 
