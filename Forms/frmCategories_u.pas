@@ -9,7 +9,9 @@ uses
   FMX.Controls.Presentation, FMX.StdCtrls, System.Rtti, FMX.Grid.Style,
   FMX.ScrollBox, FMX.Grid, FMX.Bind.Grid, FMX.Bind.Editors,
   Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope,
-  dmDB_u, FMX.Edit, FMX.ListBox;
+  FMX.Edit, FMX.ListBox,
+  objCategory_u,
+  dmDB_u;
 
 type
   TfrmCategories = class(TForm)
@@ -78,7 +80,7 @@ end;
 
 procedure TfrmCategories.SetUpGrid;
 var
-  fCol : TStringColumn;
+  fCol: TStringColumn;
 begin
   fCol := TStringColumn.Create(strGrdCats);
   fCol.Header := 'Type';
@@ -94,39 +96,33 @@ end;
 procedure TfrmCategories.UpdateGrid;
 var
   Row: Integer;
+  fCats: TCategories;
 begin
   if not Assigned(dmDB) then
     dmDB := TdmDB.Create(nil);
 
-  dmDB.qryDB.SQL.Text :=
-    'SELECT CategoryID, Title, Type FROM Categories ORDER BY Type, Title';
-  dmDB.qryDB.Open;
+  fCats := dmDB.GetCategories;
 
   strGrdCats.BeginUpdate;
   try
     strGrdCats.ClearColumns;
     strGrdCats.RowCount := 0;
 
-    if dmDB.qryDB.RecordCount > 0 then
+    if Length(fCats) > 0 then
     begin
       if strGrdCats.ColumnCount = 0 then
         SetUpGrid;
 
-      strGrdCats.RowCount := dmDB.qryDB.RecordCount;
-      Row := 0;
+      strGrdCats.RowCount := Length(fCats);
 
-      dmDB.qryDB.First;
-      while not dmDB.qryDB.Eof do
+      for Row := 0 to High(fCats) do
       begin
-        if dmDB.qryDB.FieldByName('Type').AsString = 'IN' then
+        if fCats[Row].CatType = TCategoryType.Income then
           strGrdCats.Cells[0, Row] := 'INCOME'
         else
           strGrdCats.Cells[0, Row] := 'EXPENSE';
 
-        strGrdCats.Cells[1, Row] := dmDB.qryDB.FieldByName('Title').AsString;
-
-        Inc(Row);
-        dmDB.qryDB.Next;
+        strGrdCats.Cells[1, Row] := fCats[Row].Title;
       end;
     end;
   finally

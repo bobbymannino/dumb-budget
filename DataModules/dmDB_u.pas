@@ -9,7 +9,8 @@ uses
   FireDAC.Phys, FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef,
   FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
-  FireDAC.Comp.DataSet, FireDAC.Comp.Client;
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  objCategory_u;
 
 type
   TdmDB = class(TDataModule)
@@ -24,6 +25,7 @@ type
   public
     { Public declarations }
     procedure CreateCategory(const aTitle: string; const aIsIncome: boolean);
+    function GetCategories: TCategories;
   end;
 
 var
@@ -59,6 +61,42 @@ procedure TdmDB.DataModuleDestroy(Sender: TObject);
 begin
   qryDB.Close;
   connDB.Close;
+end;
+
+function TdmDB.GetCategories: TCategories;
+var
+  fCat: TCategory;
+  i: Integer;
+begin
+  qryDB.SQL.Text :=
+    'SELECT CategoryID, Title, Type, CreatedAt FROM Categories ORDER BY Type, Title';
+  qryDB.Open;
+  try
+    if qryDB.RecordCount = 0 then
+      Exit;
+
+    SetLength(Result, qryDB.RecordCount);
+
+    i := 0;
+    qryDB.First;
+    while not qryDB.Eof do
+    begin
+      fCat.ID := qryDB.FieldByName('CategoryID').AsInteger;
+      fCat.Title := qryDB.FieldByName('Title').AsString;
+      fCat.CreatedAt := qryDB.FieldByName('CreatedAt').AsDateTime;
+      if qryDB.FieldByName('Type').AsString = 'IN' then
+        fCat.CatType := TCategoryType.Income
+      else
+        fCat.CatType := TCategoryType.Expense;
+
+      Result[i] := fCat;
+
+      Inc(i);
+      qryDB.Next;
+    end;
+  finally
+    qryDB.Close;
+  end;
 end;
 
 function TdmDB.GetDatabasePath: string;
@@ -126,7 +164,7 @@ begin
     qryDB.ExecSQL;
   except
     on e: Exception do
-      raise Exception.create('Error creating tables: ' + e.Message);
+      raise Exception.Create('Error creating tables: ' + e.Message);
   end;
 end;
 

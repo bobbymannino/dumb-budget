@@ -6,7 +6,8 @@ uses
   frmSummary_u in 'Forms\frmSummary_u.pas' {frmSummary},
   dmDB_u in 'DataModules\dmDB_u.pas' {dmDB: TDataModule},
   frmNew_u in 'Forms\frmNew_u.pas' {frmNew},
-  frmCategories_u in 'Forms\frmCategories_u.pas' {frmCategories};
+  frmCategories_u in 'Forms\frmCategories_u.pas' {frmCategories},
+  objCategory_u in 'Objects\objCategory_u.pas';
 
 {$R *.res}
 
