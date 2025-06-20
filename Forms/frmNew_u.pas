@@ -7,7 +7,7 @@ uses
   System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Edit,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ComboEdit,
-  objCategory_u,
+  objCategory_u, objTransaction_u,
   dmDB_u;
 
 type
@@ -24,6 +24,7 @@ type
     lblAmount: TLabel;
     lblFreq: TLabel;
     procedure FormCreate(Sender: TObject);
+    procedure btnAddClick(Sender: TObject);
   private
     { Private declarations }
     Cats: TCategories;
@@ -36,7 +37,41 @@ var
 
 implementation
 
+uses
+  System.TypInfo;
+
 {$R *.fmx}
+
+procedure TfrmNew.btnAddClick(Sender: TObject);
+var
+  fTns: TTransaction;
+begin
+  fTns.Title := inpTitle.Text.Trim;
+  if fTns.Title = EmptyStr then
+  begin
+    ShowMessage('Title is invalid');
+    Exit;
+  end;
+
+  fTns.FreqQuantity := inpFreqAmount.Text.ToInteger;
+  if fTns.FreqQuantity < 1 then
+  begin
+    ShowMessage('Frequency quantity is invalid');
+    Exit;
+  end;
+
+  fTns.FreqUnit := TTransactionFreqUnit(slctFreqUnit.ItemIndex);
+
+  if slctCat.ItemIndex = 0 then
+  begin
+    ShowMessage('Select a category');
+    Exit;
+  end;
+
+  fTns.CatID := Cats[slctCat.ItemIndex].ID;
+
+  dmDB.CreateTransaction(fTns);
+end;
 
 procedure TfrmNew.FormCreate(Sender: TObject);
 begin
