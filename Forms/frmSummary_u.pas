@@ -42,7 +42,7 @@ var
   fFrm: TForm;
 begin
   fFrm := TfrmCategories.Create(Self);
-  fFrm.Show;
+  fFrm.ShowModal;
 end;
 
 procedure TfrmSummary.btnNewClick(Sender: TObject);
@@ -50,7 +50,7 @@ var
   fFrm: TfrmNew;
 begin
   fFrm := TfrmNew.Create(Self);
-  fFrm.Show;
+  fFrm.ShowModal;
 end;
 
 procedure TfrmSummary.FormCreate(Sender: TObject);
