@@ -4,7 +4,7 @@ object frmNew: TfrmNew
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = Single
   Caption = 'Dumb Budget - New Expense/Income'
-  ClientHeight = 378
+  ClientHeight = 283
   ClientWidth = 436
   Position = DesktopCenter
   FormFactor.Width = 320
@@ -42,6 +42,7 @@ object frmNew: TfrmNew
     TabOrder = 10
     Text = 'Add'
     TextSettings.Trimming = None
+    OnClick = btnAddClick
   end
   object inpAmount: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
