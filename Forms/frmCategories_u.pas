@@ -100,9 +100,6 @@ var
   Row: Integer;
   fCats: TCategories;
 begin
-  if not Assigned(dmDB) then
-    dmDB := TdmDB.Create(nil);
-
   fCats := dmDB.GetCategories;
 
   strGrdCats.BeginUpdate;
