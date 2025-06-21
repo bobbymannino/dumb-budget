@@ -26,6 +26,7 @@ type
       : string; static;
     class function ParseFreqUnit(const aFreqUnit: string)
       : TTransactionFreqUnit; static;
+    class function CreateEmpty: TTransaction; static;
     function ToString: string; override;
 
     constructor Create(const aID, aCatID, aFreqQuantity: Integer;
@@ -70,6 +71,12 @@ begin
   FreqUnit := aFreqUnit;
   CatID := aCatID;
   CreatedAt := aCreatedAt;
+end;
+
+class function TTransaction.CreateEmpty: TTransaction;
+begin
+  Result := TTransaction.Create(0, 0, 0, '', 0.0, Date,
+    TTransactionFreqUnit.DAY);
 end;
 
 class function TTransaction.ParseFreqUnit(const aFreqUnit: string)
