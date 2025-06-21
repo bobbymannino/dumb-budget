@@ -64,7 +64,7 @@ begin
 
   fTns.FreqUnit := TTransactionFreqUnit(slctFreqUnit.ItemIndex);
 
-  if slctCat.ItemIndex = 0 then
+  if slctCat.ItemIndex = -1 then
   begin
     ShowMessage('Select a category');
     Exit;
