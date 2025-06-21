@@ -74,7 +74,7 @@ begin
     dmDB.CreateTransaction(fTns);
 
     Close;
-  finally
+  except on e : Exception do
     ShowMessage('Failed to create transaction');
   end;
 end;
