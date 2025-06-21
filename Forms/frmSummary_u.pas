@@ -69,7 +69,8 @@ var
 begin
   for var i := 0 to High(Tns) do
   begin
-    if Tns[i].CatType = TCategoryType.Income then
+    if Tns[i].CatType = TCategoryType.Expense then
+      SetLength(Epns, Length(Epns) + 1);
       Epns[High(Epns)] := Tns[i];
   end;
 
