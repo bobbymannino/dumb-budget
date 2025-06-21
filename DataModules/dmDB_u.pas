@@ -25,6 +25,7 @@ type
   public
     { Public declarations }
     procedure CreateTransaction(const aTns: TTransaction);
+    function GetTransactions: TTransactionsPlus;
     procedure CreateCategory(const aCat: TCategory);
     function GetCategories: TCategories;
   end;
@@ -67,42 +68,6 @@ begin
   connDB.Close;
 end;
 
-function TdmDB.GetCategories: TCategories;
-var
-  fCat: TCategory;
-  i: Integer;
-begin
-  qryDB.SQL.Text :=
-    'SELECT CategoryID, Title, Type, CreatedAt FROM Categories ORDER BY Type, Title';
-  qryDB.Open;
-  try
-    if qryDB.RecordCount = 0 then
-      Exit;
-
-    SetLength(Result, qryDB.RecordCount);
-
-    i := 0;
-    qryDB.First;
-    while not qryDB.Eof do
-    begin
-      fCat.ID := qryDB.FieldByName('CategoryID').AsInteger;
-      fCat.Title := qryDB.FieldByName('Title').AsString;
-      fCat.CreatedAt := qryDB.FieldByName('CreatedAt').AsDateTime;
-      if qryDB.FieldByName('Type').AsString = 'IN' then
-        fCat.CatType := TCategoryType.Income
-      else
-        fCat.CatType := TCategoryType.Expense;
-
-      Result[i] := fCat;
-
-      Inc(i);
-      qryDB.Next;
-    end;
-  finally
-    qryDB.Close;
-  end;
-end;
-
 function TdmDB.GetDatabasePath: string;
 var
   AppDataPath: string;
@@ -123,23 +88,6 @@ begin
     ForceDirectories(Result);
 
   Result := Result + 'Database.db';
-end;
-
-procedure TdmDB.CreateCategory(const aCat: TCategory);
-var
-  fType: string;
-begin
-  if aCat.CatType = TCategoryType.Income then
-    fType := 'IN'
-  else
-    fType := 'OUT';
-
-  qryDB.SQL.Text :=
-    'INSERT INTO Categories (Title, Type) VALUES (:Title, :Type)';
-  qryDB.ParamByName('Title').AsString := aCat.Title;
-  qryDB.ParamByName('Type').AsString := fType;
-
-  qryDB.ExecSQL;
 end;
 
 procedure TdmDB.CreateTables;
@@ -163,13 +111,51 @@ begin
     qryDB.ExecSQL;
 
     qryDB.SQL.Text := 'CREATE VIEW IF NOT EXISTS TransactionsPlus AS ' +
-      'SELECT t.*, c.Title as Category, c.CategoryID, c.Type ' +
+      'SELECT t.*, c.Title as Category, c.Type ' +
       'FROM Transactions t ' +
       'JOIN Categories c on c.CategoryID = t.CategoryID';
     qryDB.ExecSQL;
   except
     on e: Exception do
       raise Exception.Create('Error creating tables: ' + e.Message);
+  end;
+end;
+
+function TdmDB.GetTransactions: TTransactionsPlus;
+var
+  fTns: TTransactionPlus;
+  i: Integer;
+begin
+  qryDB.SQL.Text :=
+    'SELECT * FROM TransactionsPlus ORDER BY Type, Title';
+  qryDB.Open;
+  try
+    if qryDB.RecordCount = 0 then
+      Exit;
+
+    SetLength(Result, qryDB.RecordCount);
+
+    i := 0;
+    qryDB.First;
+    while not qryDB.Eof do
+    begin
+      fTns.ID := qryDB.FieldByName('TransactionID').AsInteger;
+      fTns.Title := qryDB.FieldByName('Title').AsString;
+      fTns.Amount := qryDB.FieldByName('Amount').AsFloat;
+      fTns.FreqQuantity := qryDB.FieldByName('Quantity').AsInteger;
+      fTns.FreqUnit := TTransaction.ParseFreqUnit(qryDB.FieldByName('Unit').AsString);
+      fTns.CatID := qryDB.FieldByName('CategoryID').AsInteger;
+      fTns.CatTitle := qryDB.FieldByName('Category').AsString;
+      fTns.CatType := TCategory.ParseCatType(qryDB.FieldByName('Type').AsString);
+      fTns.CreatedAt := qryDB.FieldByName('CreatedAt').AsDateTime;
+
+      Result[i] := fTns;
+
+      Inc(i);
+      qryDB.Next;
+    end;
+  finally
+    qryDB.Close;
   end;
 end;
 
@@ -181,8 +167,50 @@ begin
   qryDB.ParamByName('CatID').AsInteger := aTns.CatID;
   qryDB.ParamByName('Freq').AsInteger := aTns.FreqQuantity;
   qryDB.ParamByName('Amount').AsFloat := aTns.Amount;
-  qryDB.ParamByName('Unit').AsString :=
-    GetEnumName(TypeInfo(TTransactionFreqUnit), Ord(aTns.FreqUnit));
+  qryDB.ParamByName('Unit').AsString := TTransaction.StringifyFreqUnit(aTns.FreqUnit);
+
+  qryDB.ExecSQL;
+end;
+
+function TdmDB.GetCategories: TCategories;
+var
+  fCat: TCategory;
+  i: Integer;
+begin
+  qryDB.SQL.Text :=
+    'SELECT CategoryID, Title, Type, CreatedAt FROM Categories ORDER BY Type, Title';
+  qryDB.Open;
+  try
+    if qryDB.RecordCount = 0 then
+      Exit;
+
+    SetLength(Result, qryDB.RecordCount);
+
+    i := 0;
+    qryDB.First;
+    while not qryDB.Eof do
+    begin
+      fCat.ID := qryDB.FieldByName('CategoryID').AsInteger;
+      fCat.Title := qryDB.FieldByName('Title').AsString;
+      fCat.CreatedAt := qryDB.FieldByName('CreatedAt').AsDateTime;
+      fCat.CatType := TCategory.ParseCatType(qryDB.FieldByName('Type').AsString);
+
+      Result[i] := fCat;
+
+      Inc(i);
+      qryDB.Next;
+    end;
+  finally
+    qryDB.Close;
+  end;
+end;
+
+procedure TdmDB.CreateCategory(const aCat: TCategory);
+begin
+  qryDB.SQL.Text :=
+    'INSERT INTO Categories (Title, Type) VALUES (:Title, :Type)';
+  qryDB.ParamByName('Title').AsString := aCat.Title;
+  qryDB.ParamByName('Type').AsString := TCategory.StringifyCatType(aCat.CatType);
 
   qryDB.ExecSQL;
 end;
