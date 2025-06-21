@@ -62,6 +62,13 @@ begin
     Exit;
   end;
 
+  fTns.Amount := inpAmount.Text.ToDouble;
+  if fTns.Amount < 0 then
+  begin
+    ShowMessage('Amount is invalid');
+    Exit;
+  end;
+
   fTns.FreqUnit := TTransactionFreqUnit(slctFreqUnit.ItemIndex);
 
   if slctCat.ItemIndex = -1 then
