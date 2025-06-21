@@ -16,6 +16,9 @@ type
     property Title: string read fTitle write fTitle;
     property CreatedAt: TDateTime read fCreatedAt write fCreatedAt;
     property CatType: TCategoryType read fCatType write fCatType;
+    class function StringifyCatType(const aCatType: TCategoryType)
+      : string; static;
+    class function ParseCatType(const aCatType: string): TCategoryType; static;
     function ToString: string;
 
     constructor Create(const aID: Integer; const aTitle: string;
@@ -40,17 +43,31 @@ begin
   fCatType := aCatType;
 end;
 
-function TCategory.ToString: string;
-var
-  ftype: string;
+class function TCategory.ParseCatType(const aCatType: string): TCategoryType;
 begin
-  if fCatType = TCategoryType.Income then
-    ftype := 'Income'
+  if aCatType = 'IN' then
+    Result := TCategoryType.Income
+  else if aCatType = 'OUT' then
+    Result := TCategoryType.Expense
   else
-    ftype := 'Expense';
+    raise Exception.CreateFmt('Invalid category type: "%s"', [aCatType]);
+end;
 
+class function TCategory.StringifyCatType(const aCatType
+  : TCategoryType): string;
+begin
+  Case aCatType of
+    TCategoryType.Income:
+      Result := 'IN';
+    TCategoryType.Expense:
+      Result := 'OUT';
+  End;
+end;
+
+function TCategory.ToString: string;
+begin
   Result := Format('ID: %d, Title: %s, Type: %s, CreatedAt: %s',
-    [ID, Title, ftype, DateToStr(CreatedAt)]);
+    [ID, Title, TCategory.StringifyCatType(CatType), DateToStr(CreatedAt)]);
 end;
 
 end.
