@@ -67,14 +67,22 @@ procedure TfrmSummary.SetupExpenses;
 var
   Epns: TTransactionsPlus;
 begin
+  if Length(Tns) = 0 then
+    Exit;
+
   for var i := 0 to High(Tns) do
   begin
     if Tns[i].CatType = TCategoryType.Expense then
+    begin
       SetLength(Epns, Length(Epns) + 1);
       Epns[High(Epns)] := Tns[i];
+    end;
   end;
 
   lblExpenses.Text := Format('Expenses (%d)', [Length(Epns)]);
+
+  if Length(Epns) = 0 then
+    Exit;
 
   strGrdExpenses.BeginUpdate;
   try
