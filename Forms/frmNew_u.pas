@@ -70,7 +70,13 @@ begin
 
   fTns.CatID := Cats[slctCat.ItemIndex].ID;
 
-  dmDB.CreateTransaction(fTns);
+  try
+    dmDB.CreateTransaction(fTns);
+
+    Close;
+  finally
+    ShowMessage('Failed to create transaction');
+  end;
 end;
 
 procedure TfrmNew.FormCreate(Sender: TObject);

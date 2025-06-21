@@ -34,6 +34,9 @@ var
 
 implementation
 
+uses
+  System.TypInfo;
+
 {%CLASSGROUP 'FMX.Controls.TControl'}
 {$R *.dfm}
 
@@ -151,10 +154,11 @@ begin
 
     qryDB.SQL.Text := 'CREATE TABLE IF NOT EXISTS Transactions (' +
       'TransactionID INTEGER PRIMARY KEY AUTOINCREMENT,' +
-      'Title TEXT NOT NULL UNIQUE,' + 'Amount REAL NOT NULL,' +
+      'Title TEXT NOT NULL UNIQUE,' +
+      'Amount REAL NOT NULL,' +
       'Quantity INTEGER NOT NULL,' +
-      'Unit TEXT NOT NULL CHECK (Unit IN (''DAY'', ''WEEK'', ''FORTNIGHT'', ''MONTH'', ''YEAR'')),'
-      + 'CategoryID INTEGER NOT NULL REFERENCES Categories (CategoryID),' +
+      'Unit TEXT NOT NULL CHECK (Unit IN (''DAY'', ''WEEK'', ''FORTNIGHT'', ''MONTH'', ''YEAR'')),' +
+      'CategoryID INTEGER NOT NULL REFERENCES Categories (CategoryID),' +
       'CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP' + ')';
     qryDB.ExecSQL;
 
@@ -172,11 +176,13 @@ end;
 procedure TdmDB.CreateTransaction(const aTns: TTransaction);
 begin
   qryDB.SQL.Text :=
-    'INSERT INTO Transactions (Title, CategoryID, Unit, Frequency) VALUES (:Title, :CatID, :Unit, :Freq)';
+    'INSERT INTO Transactions (Title, CategoryID, Amount, Unit, Quantity) VALUES (:Title, :CatID, :Amount, :Unit, :Freq)';
   qryDB.ParamByName('Title').AsString := aTns.Title;
   qryDB.ParamByName('CatID').AsInteger := aTns.CatID;
   qryDB.ParamByName('Freq').AsInteger := aTns.FreqQuantity;
-  { TODO : Add freq unit here }
+  qryDB.ParamByName('Amount').AsFloat := aTns.Amount;
+  qryDB.ParamByName('Unit').AsString :=
+    GetEnumName(TypeInfo(TTransactionFreqUnit), Ord(aTns.FreqUnit));
 
   qryDB.ExecSQL;
 end;
