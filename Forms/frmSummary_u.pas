@@ -73,6 +73,8 @@ begin
       Epns[High(Epns)] := Tns[i];
   end;
 
+  lblExpenses.Text := Format('Expenses (%d)', [Length(Epns)]);
+
   strGrdExpenses.BeginUpdate;
   try
     strGrdExpenses.ClearColumns;
