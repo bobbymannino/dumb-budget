@@ -146,8 +146,8 @@ end;
 function TTransactionPlus.ToString: string;
 begin
   Result := Format
-    ('ID: %d, Title: %s, CategoryID: %d, CategoryType: %s, CategoryTitle: %s, FreqUnit: %s, FreqQuantity: %d, CreatedAt: %s',
-    [ID, Title, CatID, TCategory.StringifyCatType(CatType), CatTitle,
+    ('ID: %d, Title: %s, Amount: %f, CategoryID: %d, CategoryType: %s, CategoryTitle: %s, FreqUnit: %s, FreqQuantity: %d, CreatedAt: %s',
+    [ID, Title, Amount, CatID, TCategory.StringifyCatType(CatType), CatTitle,
     TTransaction.StringifyFreqUnit(FreqUnit), FreqQuantity,
     DateToStr(CreatedAt)]);
 end;
