@@ -43,6 +43,7 @@ type
   public
     property CatTitle: string read fCatTitle write fCatTitle;
     property CatType: TCategoryType read fCatType write fCatType;
+    class function CreateEmpty: TTransactionPlus; static;
     function ToString: string; override;
 
     constructor Create(const aID, aCatID, aFreqQuantity: Integer;
@@ -134,6 +135,12 @@ begin
 
   CatType := aCatType;
   CatTitle := aCatTitle;
+end;
+
+class function TTransactionPlus.CreateEmpty: TTransactionPlus;
+begin
+  Result := TTransactionPlus.Create(0, 0, 0, '', '', 0.0, Date,
+    TTransactionFreqUnit.DAY, TCategoryType.Income);
 end;
 
 function TTransactionPlus.ToString: string;
