@@ -42,8 +42,9 @@ object frmSummary: TfrmSummary
     Size.Height = 240.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
-    Viewport.Width = 670.000000000000000000
-    Viewport.Height = 215.000000000000000000
+    Options = [ColumnResize, ColumnMove, ColLines, RowLines, Tabs, Header, HeaderClick, AutoDisplacement]
+    Viewport.Width = 674.000000000000000000
+    Viewport.Height = 240.000000000000000000
   end
   object strGrdIncomes: TStringGrid
     Anchors = [akLeft, akTop, akRight]
@@ -55,8 +56,8 @@ object frmSummary: TfrmSummary
     Size.Height = 136.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 3
-    Viewport.Width = 670.000000000000000000
-    Viewport.Height = 111.000000000000000000
+    Viewport.Width = 674.000000000000000000
+    Viewport.Height = 136.000000000000000000
   end
   object btnNew: TButton
     Position.X = 536.000000000000000000
