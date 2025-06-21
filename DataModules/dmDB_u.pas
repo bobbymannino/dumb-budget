@@ -128,7 +128,6 @@ var
 begin
   qryDB.SQL.Text := 'SELECT * FROM TransactionsPlus ORDER BY Type, Title';
 
-  fTns := TTransactionPlus.CreateEmpty;
   try
     qryDB.Open;
 
@@ -141,7 +140,7 @@ begin
     qryDB.First;
     while not qryDB.Eof do
     begin
-
+      fTns := TTransactionPlus.CreateEmpty;
       fTns.ID := qryDB.FieldByName('TransactionID').AsInteger;
       fTns.Title := qryDB.FieldByName('Title').AsString;
       fTns.Amount := qryDB.FieldByName('Amount').AsFloat;
@@ -160,7 +159,6 @@ begin
       qryDB.Next;
     end;
   finally
-    fTns.Free;
     qryDB.Close;
   end;
 end;
