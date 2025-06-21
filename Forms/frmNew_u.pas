@@ -46,6 +46,8 @@ procedure TfrmNew.btnAddClick(Sender: TObject);
 var
   fTns: TTransaction;
 begin
+  fTns := TTransaction.CreateEmpty;
+
   fTns.Title := inpTitle.Text.Trim;
   if fTns.Title = EmptyStr then
   begin
