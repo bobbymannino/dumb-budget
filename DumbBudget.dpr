@@ -14,9 +14,9 @@ uses
 
 begin
   Application.Initialize;
+  Application.CreateForm(TdmDB, dmDB);
   Application.CreateForm(TfrmSummary, frmSummary);
   Application.CreateForm(TfrmNew, frmNew);
   Application.CreateForm(TfrmCategories, frmCategories);
-  Application.CreateForm(TdmDB, dmDB);
   Application.Run;
 end.
