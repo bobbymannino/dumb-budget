@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait,
   FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  objCategory_u, objTransaction_u;
+  objCategory_u, objTransaction_u, FireDAC.VCLUI.Wait;
 
 type
   TdmDB = class(TDataModule)
@@ -126,8 +126,7 @@ var
   fTns: TTransactionPlus;
   i: Integer;
 begin
-  qryDB.SQL.Text :=
-    'SELECT * FROM TransactionsPlus ORDER BY Type, Title';
+  qryDB.SQL.Text := 'SELECT * FROM TransactionsPlus ORDER BY Type, Title';
   qryDB.Open;
   try
     if qryDB.RecordCount = 0 then
@@ -139,14 +138,18 @@ begin
     qryDB.First;
     while not qryDB.Eof do
     begin
+      fTns := TTransactionPlus.CreateEmpty;
+
       fTns.ID := qryDB.FieldByName('TransactionID').AsInteger;
       fTns.Title := qryDB.FieldByName('Title').AsString;
       fTns.Amount := qryDB.FieldByName('Amount').AsFloat;
       fTns.FreqQuantity := qryDB.FieldByName('Quantity').AsInteger;
-      fTns.FreqUnit := TTransaction.ParseFreqUnit(qryDB.FieldByName('Unit').AsString);
+      fTns.FreqUnit := TTransaction.ParseFreqUnit(qryDB.FieldByName('Unit')
+        .AsString);
       fTns.CatID := qryDB.FieldByName('CategoryID').AsInteger;
       fTns.CatTitle := qryDB.FieldByName('Category').AsString;
-      fTns.CatType := TCategory.ParseCatType(qryDB.FieldByName('Type').AsString);
+      fTns.CatType := TCategory.ParseCatType(qryDB.FieldByName('Type')
+        .AsString);
       fTns.CreatedAt := qryDB.FieldByName('CreatedAt').AsDateTime;
 
       Result[i] := fTns;
@@ -155,6 +158,7 @@ begin
       qryDB.Next;
     end;
   finally
+    fTns.Free;
     qryDB.Close;
   end;
 end;
@@ -167,9 +171,19 @@ begin
   qryDB.ParamByName('CatID').AsInteger := aTns.CatID;
   qryDB.ParamByName('Freq').AsInteger := aTns.FreqQuantity;
   qryDB.ParamByName('Amount').AsFloat := aTns.Amount;
-  qryDB.ParamByName('Unit').AsString := TTransaction.StringifyFreqUnit(aTns.FreqUnit);
+  qryDB.ParamByName('Unit').AsString := TTransaction.StringifyFreqUnit
+    (aTns.FreqUnit);
 
-  qryDB.ExecSQL;
+  try
+    qryDB.ExecSQL;
+  except
+    on e: Exception do
+    begin
+      ShowMessage('Failed to create transaction');
+      raise Exception.Create('Failed to create transaction');
+    end;
+
+  end;
 end;
 
 function TdmDB.GetCategories: TCategories;
@@ -193,7 +207,8 @@ begin
       fCat.ID := qryDB.FieldByName('CategoryID').AsInteger;
       fCat.Title := qryDB.FieldByName('Title').AsString;
       fCat.CreatedAt := qryDB.FieldByName('CreatedAt').AsDateTime;
-      fCat.CatType := TCategory.ParseCatType(qryDB.FieldByName('Type').AsString);
+      fCat.CatType := TCategory.ParseCatType(qryDB.FieldByName('Type')
+        .AsString);
 
       Result[i] := fCat;
 
@@ -210,7 +225,8 @@ begin
   qryDB.SQL.Text :=
     'INSERT INTO Categories (Title, Type) VALUES (:Title, :Type)';
   qryDB.ParamByName('Title').AsString := aCat.Title;
-  qryDB.ParamByName('Type').AsString := TCategory.StringifyCatType(aCat.CatType);
+  qryDB.ParamByName('Type').AsString := TCategory.StringifyCatType
+    (aCat.CatType);
 
   qryDB.ExecSQL;
 end;
