@@ -26,6 +26,7 @@ type
   private
     { Private declarations }
     procedure SetupExpenses;
+    procedure SetupExpensesHeaders;
   public
     { Public declarations }
   end;
@@ -63,27 +64,21 @@ var
   Row: Integer;
   fTitleCol: TStringColumn;
 begin
-  if not Assigned(dmDB) then
-    dmDB := TdmDB.Create(Self);
-
-  dmDB.qryDB.SQL.Text := 'SELECT Title FROM TransactionsPlus ' +
-    'WHERE Type = :Type';
+  dmDB.qryDB.SQL.Text := 'SELECT Title FROM TransactionsPlus WHERE Type = :Type ORDER BY Title';
   dmDB.qryDB.ParamByName('Type').AsString := 'OUT';
   dmDB.qryDB.Open;
 
   strGrdExpenses.BeginUpdate;
-
   try
     strGrdExpenses.ClearColumns;
+    strGrdExpenses.RowCount := 0;
 
-    fTitleCol := TStringColumn.Create(strGrdExpenses);
-    fTitleCol.Header := 'Title';
-    fTitleCol.Width := 200;
-    strGrdExpenses.AddObject(fTitleCol);
+    if strGrdExpenses.ColumnCount = 0 then
+      SetupExpensesHeaders;
 
     strGrdExpenses.RowCount := dmDB.qryDB.RecordCount;
 
-    Row := 1;
+    Row := 0;
     dmDB.qryDB.First;
 
     while not dmDB.qryDB.Eof do
@@ -96,6 +91,16 @@ begin
   finally
     strGrdExpenses.EndUpdate;
   end;
+end;
+
+procedure TfrmSummary.SetupExpensesHeaders;
+var
+  fCol: TStringColumn;
+begin
+    fCol := TStringColumn.Create(strGrdExpenses);
+    fCol.Header := 'Title';
+    fCol.Width := 200;
+    strGrdExpenses.AddObject(fCol);
 end;
 
 end.
