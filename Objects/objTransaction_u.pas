@@ -82,15 +82,15 @@ end;
 class function TTransaction.ParseFreqUnit(const aFreqUnit: string)
   : TTransactionFreqUnit;
 begin
-  if aFreqUnit = 'Day' then
+  if aFreqUnit = 'DAY' then
     Result := TTransactionFreqUnit.DAY
-  else if aFreqUnit = 'Week' then
+  else if aFreqUnit = 'WEEK' then
     Result := TTransactionFreqUnit.WEEK
-  else if aFreqUnit = 'Fortnight' then
+  else if aFreqUnit = 'FORTNIGHT' then
     Result := TTransactionFreqUnit.FORTNIGHT
-  else if aFreqUnit = 'Month' then
+  else if aFreqUnit = 'MONTH' then
     Result := TTransactionFreqUnit.MONTH
-  else if aFreqUnit = 'Year' then
+  else if aFreqUnit = 'YEAR' then
     Result := TTransactionFreqUnit.YEAR
   else
     raise Exception.CreateFmt('Invalid transaction frequency unit: "%s"',
@@ -102,15 +102,15 @@ class function TTransaction.StringifyFreqUnit(const aFreqUnit
 begin
   Case aFreqUnit of
     TTransactionFreqUnit.DAY:
-      Result := 'Day';
+      Result := 'DAY';
     TTransactionFreqUnit.WEEK:
-      Result := 'Week';
+      Result := 'WEEK';
     TTransactionFreqUnit.FORTNIGHT:
-      Result := 'Fortnight';
+      Result := 'FORTNIGHT';
     TTransactionFreqUnit.MONTH:
-      Result := 'Month';
+      Result := 'MONTH';
     TTransactionFreqUnit.YEAR:
-      Result := 'Year';
+      Result := 'YEAR';
   End;
 end;
 
