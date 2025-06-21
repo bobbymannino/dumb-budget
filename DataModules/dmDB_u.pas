@@ -58,7 +58,7 @@ begin
     CreateTables;
   except
     on e: Exception do
-      ShowMessage(e.Message);
+      ShowMessage('Failed to create tables');
   end;
 end;
 
@@ -127,8 +127,11 @@ var
   i: Integer;
 begin
   qryDB.SQL.Text := 'SELECT * FROM TransactionsPlus ORDER BY Type, Title';
-  qryDB.Open;
+
+  fTns := TTransactionPlus.CreateEmpty;
   try
+    qryDB.Open;
+
     if qryDB.RecordCount = 0 then
       Exit;
 
@@ -138,7 +141,6 @@ begin
     qryDB.First;
     while not qryDB.Eof do
     begin
-      fTns := TTransactionPlus.CreateEmpty;
 
       fTns.ID := qryDB.FieldByName('TransactionID').AsInteger;
       fTns.Title := qryDB.FieldByName('Title').AsString;
