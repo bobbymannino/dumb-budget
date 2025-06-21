@@ -26,11 +26,11 @@ type
       : string; static;
     class function ParseFreqUnit(const aFreqUnit: string)
       : TTransactionFreqUnit; static;
-    function ToString: string; virtual;
+    function ToString: string; override;
 
     constructor Create(const aID, aCatID, aFreqQuantity: Integer;
       const aTitle: string; const aAmount: Double; const aCreatedAt: TDateTime;
-      const aFreqUnit: TTransactionFreqUnit); virtual;
+      const aFreqUnit: TTransactionFreqUnit);
   end;
 
   TTransactions = TArray<TTransaction>;
@@ -47,7 +47,7 @@ type
     constructor Create(const aID, aCatID, aFreqQuantity: Integer;
       const aTitle, aCatTitle: string; const aAmount: Double;
       const aCreatedAt: TDateTime; const aFreqUnit: TTransactionFreqUnit;
-      const aCatType: TCategoryType); override;
+      const aCatType: TCategoryType);
   end;
 
   TTransactionsPlus = TArray<TTransactionPlus>;
