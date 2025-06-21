@@ -97,7 +97,6 @@ end;
 
 procedure TfrmCategories.UpdateGrid;
 var
-  Row: Integer;
   fCats: TCategories;
 begin
   fCats := dmDB.GetCategories;
@@ -114,14 +113,10 @@ begin
 
       strGrdCats.RowCount := Length(fCats);
 
-      for Row := 0 to High(fCats) do
+      for var i := 0 to High(fCats) do
       begin
-        if fCats[Row].CatType = TCategoryType.Income then
-          strGrdCats.Cells[0, Row] := 'INCOME'
-        else
-          strGrdCats.Cells[0, Row] := 'EXPENSE';
-
-        strGrdCats.Cells[1, Row] := fCats[Row].Title;
+        strGrdCats.Cells[1, i] := fCats[i].Title;
+        strGrdCats.Cells[0, i] := TCategory.StringifyCatType(fCats[i].CatType);
       end;
     end;
   finally

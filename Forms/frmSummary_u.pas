@@ -10,6 +10,7 @@ uses
   FMX.ScrollBox, FMX.Grid,
   Data.DB,
   dmDB_u,
+  objTransaction_u, objCategory_u,
   frmNew_u, frmCategories_u;
 
 type
@@ -25,6 +26,7 @@ type
     procedure btnCatsClick(Sender: TObject);
   private
     { Private declarations }
+    Tns: TTransactionsPlus;
     procedure SetupExpenses;
     procedure SetupExpensesHeaders;
   public
@@ -56,17 +58,20 @@ end;
 
 procedure TfrmSummary.FormCreate(Sender: TObject);
 begin
+  Tns := dmDB.GetTransactions;
+
   SetupExpenses;
 end;
 
 procedure TfrmSummary.SetupExpenses;
 var
-  Row: Integer;
-  fTitleCol: TStringColumn;
+  Epns: TTransactionsPlus;
 begin
-  dmDB.qryDB.SQL.Text := 'SELECT Title FROM TransactionsPlus WHERE Type = :Type ORDER BY Title';
-  dmDB.qryDB.ParamByName('Type').AsString := 'OUT';
-  dmDB.qryDB.Open;
+  for var i := 0 to High(Tns) do
+  begin
+    if Tns[i].CatType = TCategoryType.Income then
+      Epns[High(Epns)] := Tns[i];
+  end;
 
   strGrdExpenses.BeginUpdate;
   try
@@ -76,17 +81,11 @@ begin
     if strGrdExpenses.ColumnCount = 0 then
       SetupExpensesHeaders;
 
-    strGrdExpenses.RowCount := dmDB.qryDB.RecordCount;
+    strGrdExpenses.RowCount := Length(Epns);
 
-    Row := 0;
-    dmDB.qryDB.First;
-
-    while not dmDB.qryDB.Eof do
+    for var i := 0 to High(Epns) do
     begin
-      strGrdExpenses.Cells[0, Row] := dmDB.qryDB.FieldByName('Title').AsString;
-
-      Inc(Row);
-      dmDB.qryDB.Next;
+      strGrdExpenses.Cells[0, i] := dmDB.qryDB.FieldByName('Title').AsString;
     end;
   finally
     strGrdExpenses.EndUpdate;
@@ -97,10 +96,15 @@ procedure TfrmSummary.SetupExpensesHeaders;
 var
   fCol: TStringColumn;
 begin
-    fCol := TStringColumn.Create(strGrdExpenses);
-    fCol.Header := 'Title';
-    fCol.Width := 200;
-    strGrdExpenses.AddObject(fCol);
+  fCol := TStringColumn.Create(strGrdExpenses);
+  fCol.Header := 'Title';
+  fCol.Width := 200;
+  strGrdExpenses.AddObject(fCol);
+
+  { TODO : Add other headers }
 end;
+
+{ TODO : export option }
+{ TODO : import option }
 
 end.
