@@ -96,7 +96,7 @@ begin
 
     for var i := 0 to High(Epns) do
     begin
-      strGrdExpenses.Cells[0, i] := dmDB.qryDB.FieldByName('Title').AsString;
+       strGrdExpenses.Cells[0, i] := Epns[i].Title;
     end;
   finally
     strGrdExpenses.EndUpdate;
@@ -111,7 +111,7 @@ begin
   fCol.Header := 'Title';
   fCol.Width := 200;
   strGrdExpenses.AddObject(fCol);
-
+  
   { TODO : Add other headers }
 end;
 
