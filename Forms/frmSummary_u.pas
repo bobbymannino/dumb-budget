@@ -96,7 +96,11 @@ begin
 
     for var i := 0 to High(Epns) do
     begin
-       strGrdExpenses.Cells[0, i] := Epns[i].Title;
+      strGrdExpenses.Cells[0, i] := Epns[i].Title;
+      strGrdExpenses.Cells[1, i] := Epns[i].Amount.ToString;
+      strGrdExpenses.Cells[2, i] := Epns[i].FreqQuantity.ToString;
+      strGrdExpenses.Cells[3, i] := TTransaction.StringifyFreqUnit(Epns[i].FreqUnit);
+      strGrdExpenses.Cells[4, i] := Epns[i].CatTitle;
     end;
   finally
     strGrdExpenses.EndUpdate;
@@ -109,10 +113,28 @@ var
 begin
   fCol := TStringColumn.Create(strGrdExpenses);
   fCol.Header := 'Title';
-  fCol.Width := 200;
+  fCol.Width := 150;
   strGrdExpenses.AddObject(fCol);
-  
-  { TODO : Add other headers }
+
+  fCol := TStringColumn.Create(strGrdExpenses);
+  fCol.Header := 'Amount';
+  fCol.Width := 75;
+  strGrdExpenses.AddObject(fCol);
+
+  fCol := TStringColumn.Create(strGrdExpenses);
+  fCol.Header := 'Per';
+  fCol.Width := 50;
+  strGrdExpenses.AddObject(fCol);
+
+  fCol := TStringColumn.Create(strGrdExpenses);
+  fCol.Header := 'Unit';
+  fCol.Width := 75;
+  strGrdExpenses.AddObject(fCol);
+
+  fCol := TStringColumn.Create(strGrdExpenses);
+  fCol.Header := 'Category';
+  fCol.Width := 150;
+  strGrdExpenses.AddObject(fCol);
 end;
 
 { TODO : export option }
