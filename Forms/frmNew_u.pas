@@ -82,7 +82,9 @@ begin
   try
     dmDB.CreateTransaction(fTns);
 
-    Close;
+    inpTitle.Text := '';
+    inpAmount.Text := '';
+    inpFreqAmount.Text := '';
   except on e : Exception do
     ShowMessage('Failed to create transaction');
   end;

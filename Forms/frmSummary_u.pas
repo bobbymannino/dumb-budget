@@ -27,6 +27,7 @@ type
   private
     { Private declarations }
     Tns: TTransactionsPlus;
+    procedure UpdateExpenses;
     procedure SetupExpenses;
     procedure SetupExpensesHeaders;
   public
@@ -54,6 +55,7 @@ var
 begin
   fFrm := TfrmNew.Create(Self);
   fFrm.ShowModal;
+
 end;
 
 procedure TfrmSummary.FormCreate(Sender: TObject);
@@ -99,7 +101,8 @@ begin
       strGrdExpenses.Cells[0, i] := Epns[i].Title;
       strGrdExpenses.Cells[1, i] := Epns[i].Amount.ToString;
       strGrdExpenses.Cells[2, i] := Epns[i].FreqQuantity.ToString;
-      strGrdExpenses.Cells[3, i] := TTransaction.StringifyFreqUnit(Epns[i].FreqUnit);
+      strGrdExpenses.Cells[3, i] := TTransaction.StringifyFreqUnit
+        (Epns[i].FreqUnit);
       strGrdExpenses.Cells[4, i] := Epns[i].CatTitle;
     end;
   finally
@@ -135,6 +138,13 @@ begin
   fCol.Header := 'Category';
   fCol.Width := 150;
   strGrdExpenses.AddObject(fCol);
+end;
+
+procedure TfrmSummary.UpdateExpenses;
+begin
+  Tns := dmDB.GetTransactions;
+
+  SetupExpenses;
 end;
 
 { TODO : export option }
