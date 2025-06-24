@@ -24,6 +24,7 @@ type
     procedure CreateTables;
   public
     { Public declarations }
+    procedure DeleteTransaction(const aTnsID: Integer);
     procedure UpdateTransaction(const aTns: TTransaction);
     procedure CreateTransaction(const aTns: TTransaction);
     function GetTransactions: TTransactionsPlus;
@@ -69,12 +70,26 @@ begin
   connDB.Close;
 end;
 
+procedure TdmDB.DeleteTransaction(const aTnsID: Integer);
+begin
+  qryDB.SQL.Text := 'DELETE FROM Transactions WHERE TransactionID = :TnsID';
+
+  qryDB.ParamByName('TnsID').AsInteger := aTnsID;
+
+  try
+    qryDB.ExecSQL;
+  except
+    on e: Exception do
+      raise Exception.Create('Failed to update transaction');
+  end;
+end;
+
 function TdmDB.GetDatabasePath: string;
 var
   AppDataPath: string;
   AppFolder: string;
 begin
-  { TODO : Add path for macOS }
+  { TODO 1 -cBuild : Add path for macOS }
   AppDataPath := GetEnvironmentVariable('LOCALAPPDATA');
 
   if AppDataPath = '' then
@@ -164,14 +179,9 @@ end;
 
 procedure TdmDB.UpdateTransaction(const aTns: TTransaction);
 begin
-  qryDB.SQL.Text :=
-  'UPDATE Transactions SET ' +
-  'Title = :Title, ' +
-    'CategoryID = :CatID, ' +
-    'Amount = :Amount, ' +
-    'Unit = :Unit, ' +
-    'Quantity = :Freq ' +
-    'WHERE TransactionID = :TnsID';
+  qryDB.SQL.Text := 'UPDATE Transactions SET ' + 'Title = :Title, ' +
+    'CategoryID = :CatID, ' + 'Amount = :Amount, ' + 'Unit = :Unit, ' +
+    'Quantity = :Freq ' + 'WHERE TransactionID = :TnsID';
 
   qryDB.ParamByName('Title').AsString := aTns.Title;
   qryDB.ParamByName('CatID').AsInteger := aTns.CatID;
