@@ -1,0 +1,108 @@
+object fmeEditTransaction: TfmeEditTransaction
+  Size.Width = 420.000000000000000000
+  Size.Height = 242.000000000000000000
+  Size.PlatformDefault = False
+  object inpTitle: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 2
+    Position.Y = 25.000000000000000000
+    Size.Width = 420.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object btnSubmit: TButton
+    Anchors = [akLeft, akTop, akRight]
+    Position.Y = 220.000000000000000000
+    Size.Width = 420.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 10
+    Text = 'Submit'
+    TextSettings.Trimming = None
+    OnClick = btnSubmitClick
+  end
+  object inpAmount: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 4
+    Position.Y = 80.000000000000000000
+    Size.Width = 420.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object slctFreqUnit: TComboEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 7
+    ItemHeight = 19.000000000000000000
+    Items.Strings = (
+      'Day'
+      'Week'
+      'Fortnight'
+      'Month'
+      'Year')
+    ItemIndex = 3
+    Text = 'Month'
+    Position.X = 113.000000000000000000
+    Position.Y = 135.000000000000000000
+    Size.Width = 307.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object inpFreqAmount: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    TabOrder = 6
+    Text = '1'
+    Position.Y = 135.000000000000000000
+    Size.Width = 105.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object slctCat: TComboEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Anchors = [akLeft, akTop, akRight]
+    TabOrder = 9
+    ItemHeight = 19.000000000000000000
+    ItemIndex = -1
+    Position.Y = 190.000000000000000000
+    Size.Width = 420.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object lblTitle: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Size.Width = 420.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Title'
+    TabOrder = 1
+  end
+  object lblCat: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Position.Y = 165.000000000000000000
+    Size.Width = 420.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Category'
+    TabOrder = 8
+  end
+  object lblAmount: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Position.Y = 55.000000000000000000
+    Size.Width = 420.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Amount ('#163')'
+    TabOrder = 3
+  end
+  object lblFreq: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Position.Y = 110.000000000000000000
+    Size.Width = 420.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Frequency'
+    TabOrder = 5
+  end
+end

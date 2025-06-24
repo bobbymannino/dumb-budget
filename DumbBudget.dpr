@@ -8,7 +8,8 @@ uses
   frmNew_u in 'Forms\frmNew_u.pas' {frmNew},
   frmCategories_u in 'Forms\frmCategories_u.pas' {frmCategories},
   objCategory_u in 'Objects\objCategory_u.pas',
-  objTransaction_u in 'Objects\objTransaction_u.pas';
+  objTransaction_u in 'Objects\objTransaction_u.pas',
+  fmeEditTransaction_u in 'Frames\fmeEditTransaction_u.pas' {fmeEditTransaction: TFrame};
 
 {$R *.res}
 

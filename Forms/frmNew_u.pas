@@ -7,27 +7,18 @@ uses
   System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Edit,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ComboEdit,
-  objCategory_u, objTransaction_u,
+  fmeEditTransaction_u,
+  objTransaction_u,
   dmDB_u;
 
 type
   TfrmNew = class(TForm)
     lblFormTitle: TLabel;
-    btnAdd: TButton;
-    inpTitle: TEdit;
-    inpAmount: TEdit;
-    slctFreqUnit: TComboEdit;
-    inpFreqAmount: TEdit;
-    slctCat: TComboEdit;
-    lblTitle: TLabel;
-    lblCat: TLabel;
-    lblAmount: TLabel;
-    lblFreq: TLabel;
+    fmeEditTransaction: TfmeEditTransaction;
     procedure FormCreate(Sender: TObject);
-    procedure btnAddClick(Sender: TObject);
   private
     { Private declarations }
-    Cats: TCategories;
+    procedure AfterSubmitFn(const aTns: TTransaction);
   public
     { Public declarations }
   end;
@@ -42,62 +33,22 @@ uses
 
 {$R *.fmx}
 
-procedure TfrmNew.btnAddClick(Sender: TObject);
-var
-  fTns: TTransaction;
+procedure TfrmNew.AfterSubmitFn(const aTns: TTransaction);
 begin
-  fTns := TTransaction.CreateEmpty;
-
-  fTns.Title := inpTitle.Text.Trim;
-  if fTns.Title = EmptyStr then
-  begin
-    ShowMessage('Title is invalid');
-    Exit;
-  end;
-
-  fTns.FreqQuantity := inpFreqAmount.Text.ToInteger;
-  if fTns.FreqQuantity < 1 then
-  begin
-    ShowMessage('Frequency quantity is invalid');
-    Exit;
-  end;
-
-  fTns.Amount := inpAmount.Text.ToDouble;
-  if fTns.Amount < 0 then
-  begin
-    ShowMessage('Amount is invalid');
-    Exit;
-  end;
-
-  fTns.FreqUnit := TTransactionFreqUnit(slctFreqUnit.ItemIndex);
-
-  if slctCat.ItemIndex = -1 then
-  begin
-    ShowMessage('Select a category');
-    Exit;
-  end;
-
-  fTns.CatID := Cats[slctCat.ItemIndex].ID;
-
   try
-    dmDB.CreateTransaction(fTns);
-
-    inpTitle.Text := '';
-    inpAmount.Text := '';
-    inpFreqAmount.Text := '';
-  except on e : Exception do
-    ShowMessage('Failed to create transaction');
+    dmDB.CreateTransaction(aTns);
+    fmeEditTransaction.ClearInputs;
+  except
+    on e: Exception do
+      ShowMessage(e.Message);
   end;
 end;
 
 procedure TfrmNew.FormCreate(Sender: TObject);
 begin
-  Cats := dmDB.GetCategories;
-
-  for var i := 0 to High(Cats) do
-  begin
-    slctCat.Items.Add(Cats[i].Title);
-  end;
+  fmeEditTransaction.SetSubmitButtonText('Add');
+  fmeEditTransaction.SetAfterSubmitFn(AfterSubmitFn);
+  fmeEditTransaction.FetchCategories;
 end;
 
 end.
