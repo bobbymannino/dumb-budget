@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes,
   System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  FMX.Controls.Presentation, FMX.StdCtrls,
+  FMX.Controls.Presentation, FMX.StdCtrls, FMX.DialogService,
   fmeEditTransaction_u,
   objTransaction_u,
   dmDB_u;
@@ -23,6 +23,7 @@ type
     fTns: TTransaction;
     procedure AfterSubmitFn(const aTns: TTransaction);
     procedure SetTns(const aTns: TTransaction);
+    procedure CloseDeleteDialog(const AResult: TModalResult);
   public
     property Tns: TTransaction read fTns write SetTns;
     { Public declarations }
@@ -54,14 +55,21 @@ begin
     Exit;
   end;
 
-  if MessageDlg('Are you sure you want to delete this transaction?',
-    TMsgDlgType.mtConfirmation, [TMsgDlgBtn.mbOk, TMsgDlgBtn.mbCancel], 0) = mrOk
-  then
+  { DONE 1 -cRefactor : Use DialogService }
+  TDialogService.MessageDialog
+    ('Are you sure you want to delete this transaction?',
+    TMsgDlgType.mtConfirmation, [TMsgDlgBtn.mbOk, TMsgDlgBtn.mbCancel],
+    TMsgDlgBtn.mbCancel, 0, CloseDeleteDialog)
+end;
+
+procedure TfrmEdit.CloseDeleteDialog(const AResult: TModalResult);
+begin
+  if AResult = mrOk then
   begin
     try
-       dmDB.DeleteTransaction(Tns.ID);
+      dmDB.DeleteTransaction(Tns.ID);
 
-       Close;
+      Close;
     except
       on e: Exception do
         ShowMessage('Failed to delete transaction');
