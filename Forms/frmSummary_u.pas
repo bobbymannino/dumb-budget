@@ -101,8 +101,8 @@ end;
 
 procedure TfrmSummary.RefreshExpenses;
 begin
-  { TODO : work average/month }
-  { TODO : sort by amount/month descending }
+  { TODO 3 -cUI : work average/month }
+  { TODO 3 -cUI : sort by amount/month descending }
   lblExpenses.Text := 'Expenses';
 
   if Length(ExpenseTns) = 0 then
@@ -241,7 +241,7 @@ begin
   if (Row >= 0) and (Row < Length(ExpenseTns)) then
   begin
     fFrm := TfrmEdit.Create(Self);
-    fFrm.fmeEditTransaction.Populate(ExpenseTns[Row]);
+    fFrm.Tns := ExpenseTns[Row];
     fFrm.ShowModal;
 
     RefreshTransactions;
@@ -256,15 +256,17 @@ begin
   if (Row >= 0) and (Row < Length(IncomeTns)) then
   begin
     fFrm := TfrmEdit.Create(Self);
-    fFrm.fmeEditTransaction.Populate(IncomeTns[Row]);
+    fFrm.Tns := IncomeTns[Row];
     fFrm.ShowModal;
 
     RefreshTransactions;
   end;
 end;
 
-{ TODO : export option }
-{ TODO : import option }
-{ TODO : remove transaction }
+{ TODO 3 -cFeature : export option }
+{ TODO 3 -cFeature : import option }
+{ TODO 2 -cFeature : edit category }
+{ TODO 2 -cFeature : delete category }
+{ TODO 3 -cFeature : automatic/manual backup }
 
 end.

@@ -4,7 +4,7 @@ object frmEdit: TfrmEdit
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = Single
   Caption = 'Dumb Budget - Edit Expense/Income'
-  ClientHeight = 283
+  ClientHeight = 313
   ClientWidth = 436
   Position = DesktopCenter
   FormFactor.Width = 320
@@ -28,5 +28,17 @@ object frmEdit: TfrmEdit
     Size.Width = 420.000000000000000000
     Size.Height = 242.000000000000000000
     Size.PlatformDefault = False
+    TabOrder = 1
+  end
+  object btnDelete: TButton
+    Position.X = 8.000000000000000000
+    Position.Y = 283.000000000000000000
+    Size.Width = 420.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    Text = 'Delete'
+    TextSettings.Trimming = None
+    OnClick = btnDeleteClick
   end
 end
