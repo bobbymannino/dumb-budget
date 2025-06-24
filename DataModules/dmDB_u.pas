@@ -24,6 +24,7 @@ type
     procedure CreateTables;
   public
     { Public declarations }
+    procedure UpdateTransaction(const aTns: TTransaction);
     procedure CreateTransaction(const aTns: TTransaction);
     function GetTransactions: TTransactionsPlus;
     procedure CreateCategory(const aCat: TCategory);
@@ -102,17 +103,15 @@ begin
 
     qryDB.SQL.Text := 'CREATE TABLE IF NOT EXISTS Transactions (' +
       'TransactionID INTEGER PRIMARY KEY AUTOINCREMENT,' +
-      'Title TEXT NOT NULL UNIQUE,' +
-      'Amount REAL NOT NULL,' +
+      'Title TEXT NOT NULL UNIQUE,' + 'Amount REAL NOT NULL,' +
       'Quantity INTEGER NOT NULL,' +
-      'Unit TEXT NOT NULL CHECK (Unit IN (''DAY'', ''WEEK'', ''FORTNIGHT'', ''MONTH'', ''YEAR'')),' +
-      'CategoryID INTEGER NOT NULL REFERENCES Categories (CategoryID),' +
+      'Unit TEXT NOT NULL CHECK (Unit IN (''DAY'', ''WEEK'', ''FORTNIGHT'', ''MONTH'', ''YEAR'')),'
+      + 'CategoryID INTEGER NOT NULL REFERENCES Categories (CategoryID),' +
       'CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP' + ')';
     qryDB.ExecSQL;
 
     qryDB.SQL.Text := 'CREATE VIEW IF NOT EXISTS TransactionsPlus AS ' +
-      'SELECT t.*, c.Title as Category, c.Type ' +
-      'FROM Transactions t ' +
+      'SELECT t.*, c.Title as Category, c.Type ' + 'FROM Transactions t ' +
       'JOIN Categories c on c.CategoryID = t.CategoryID';
     qryDB.ExecSQL;
   except
@@ -163,6 +162,34 @@ begin
   end;
 end;
 
+procedure TdmDB.UpdateTransaction(const aTns: TTransaction);
+begin
+  qryDB.SQL.Text :=
+  'UPDATE Transactions SET ' +
+  'Title = :Title, ' +
+    'CategoryID = :CatID, ' +
+    'Amount = :Amount, ' +
+    'Unit = :Unit, ' +
+    'Quantity = :Freq ' +
+    'WHERE TransactionID = :TnsID';
+
+  qryDB.ParamByName('Title').AsString := aTns.Title;
+  qryDB.ParamByName('CatID').AsInteger := aTns.CatID;
+  qryDB.ParamByName('Freq').AsInteger := aTns.FreqQuantity;
+  qryDB.ParamByName('Amount').AsFloat := aTns.Amount;
+  qryDB.ParamByName('Unit').AsString := TTransaction.StringifyFreqUnit
+    (aTns.FreqUnit);
+
+  qryDB.ParamByName('TnsID').AsInteger := aTns.ID;
+
+  try
+    qryDB.ExecSQL;
+  except
+    on e: Exception do
+      raise Exception.Create('Failed to update transaction');
+  end;
+end;
+
 procedure TdmDB.CreateTransaction(const aTns: TTransaction);
 begin
   qryDB.SQL.Text :=
@@ -182,7 +209,6 @@ begin
       ShowMessage('Failed to create transaction');
       raise Exception.Create('Failed to create transaction');
     end;
-
   end;
 end;
 
