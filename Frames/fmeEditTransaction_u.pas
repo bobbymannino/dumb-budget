@@ -29,6 +29,7 @@ type
     { Private declarations }
     Cats: TCategories;
     AfterSubmitFn: TAfterSubmitFn;
+    TnsID: Integer;
   public
     { Public declarations }
     procedure Populate(const aTns: TTransaction);
@@ -48,6 +49,7 @@ var
   fTns: TTransaction;
 begin
   fTns := TTransaction.CreateEmpty;
+  fTns.ID := TnsID;
 
   fTns.Title := inpTitle.Text.Trim;
   if fTns.Title = EmptyStr then
@@ -100,15 +102,17 @@ begin
     if Cats[i].ID = aTns.CatID then
     begin
       slctCat.ItemIndex := i;
-      Exit;
+      Break;
     end;
   end;
 
   slctFreqUnit.ItemIndex := Ord(aTns.FreqUnit);
+
+  TnsID := aTns.ID;
 end;
 
-procedure TfmeEditTransaction.SetAfterSubmitFn(
-  const aAfterSubmitFn: TAfterSubmitFn);
+procedure TfmeEditTransaction.SetAfterSubmitFn(const aAfterSubmitFn
+  : TAfterSubmitFn);
 begin
   AfterSubmitFn := aAfterSubmitFn;
 end;

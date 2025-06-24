@@ -1,0 +1,32 @@
+object frmEdit: TfrmEdit
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = Single
+  Caption = 'Dumb Budget - Edit Expense/Income'
+  ClientHeight = 283
+  ClientWidth = 436
+  Position = DesktopCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object lblFormTitle: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 8.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 420.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Edit Expense or Income'
+    TabOrder = 0
+  end
+  inline fmeEditTransaction: TfmeEditTransaction
+    Position.X = 8.000000000000000000
+    Position.Y = 33.000000000000000000
+    Size.Width = 420.000000000000000000
+    Size.Height = 242.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

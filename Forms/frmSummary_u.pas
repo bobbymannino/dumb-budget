@@ -11,7 +11,7 @@ uses
   Data.DB,
   dmDB_u,
   objTransaction_u, objCategory_u,
-  frmNew_u, frmCategories_u;
+  frmNew_u, frmCategories_u, frmEdit_u;
 
 type
   TfrmSummary = class(TForm)
@@ -101,6 +101,8 @@ end;
 
 procedure TfrmSummary.RefreshExpenses;
 begin
+  { TODO : work average/month }
+  { TODO : sort by amount/month descending }
   lblExpenses.Text := 'Expenses';
 
   if Length(ExpenseTns) = 0 then
@@ -125,8 +127,7 @@ begin
     begin
       strGrdExpenses.Cells[0, i] := ExpenseTns[i].Title;
       strGrdExpenses.Cells[1, i] := ExpenseTns[i].Amount.ToString;
-      strGrdExpenses.Cells[2, i] := ExpenseTns[i]
-        .FreqQuantity.ToString;
+      strGrdExpenses.Cells[2, i] := ExpenseTns[i].FreqQuantity.ToString;
       strGrdExpenses.Cells[3, i] := TTransaction.StringifyFreqUnit
         (ExpenseTns[i].FreqUnit);
       strGrdExpenses.Cells[4, i] := ExpenseTns[i].CatTitle;
@@ -232,9 +233,38 @@ begin
   strGrdIncomes.AddObject(fCol);
 end;
 
+procedure TfrmSummary.strGrdExpensesCellDblClick(const Column: TColumn;
+  const Row: Integer);
+var
+  fFrm: TfrmEdit;
+begin
+  if (Row >= 0) and (Row < Length(ExpenseTns)) then
+  begin
+    fFrm := TfrmEdit.Create(Self);
+    fFrm.fmeEditTransaction.Populate(ExpenseTns[Row]);
+    fFrm.ShowModal;
+
+    RefreshTransactions;
+  end;
+end;
+
+procedure TfrmSummary.strGrdIncomesCellDblClick(const Column: TColumn;
+  const Row: Integer);
+var
+  fFrm: TfrmEdit;
+begin
+  if (Row >= 0) and (Row < Length(IncomeTns)) then
+  begin
+    fFrm := TfrmEdit.Create(Self);
+    fFrm.fmeEditTransaction.Populate(IncomeTns[Row]);
+    fFrm.ShowModal;
+
+    RefreshTransactions;
+  end;
+end;
+
 { TODO : export option }
 { TODO : import option }
-{ TODO : edit transaction }
 { TODO : remove transaction }
 
 end.
