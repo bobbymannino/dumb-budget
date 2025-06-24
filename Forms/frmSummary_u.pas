@@ -24,9 +24,15 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btnNewClick(Sender: TObject);
     procedure btnCatsClick(Sender: TObject);
+    procedure strGrdExpensesCellDblClick(const Column: TColumn;
+      const Row: Integer);
+    procedure strGrdIncomesCellDblClick(const Column: TColumn;
+      const Row: Integer);
   private
     { Private declarations }
     Tns: TTransactionsPlus;
+    ExpenseTns: TTransactionsPlus;
+    IncomeTns: TTransactionsPlus;
     procedure RefreshTransactions;
     procedure SetupExpensesHeaders;
     procedure SetupIncomesHeaders;
@@ -72,31 +78,37 @@ procedure TfrmSummary.RefreshTransactions;
 begin
   Tns := dmDB.GetTransactions;
 
+  SetLength(IncomeTns, 0);
+  SetLength(ExpenseTns, 0);
+
+  for var i := 0 to High(Tns) do
+  begin
+    if Tns[i].CatType = TCategoryType.Income then
+    begin
+      SetLength(IncomeTns, Length(IncomeTns) + 1);
+      IncomeTns[High(IncomeTns)] := Tns[i];
+    end
+    else if Tns[i].CatType = TCategoryType.Expense then
+    begin
+      SetLength(ExpenseTns, Length(ExpenseTns) + 1);
+      ExpenseTns[High(ExpenseTns)] := Tns[i];
+    end;
+  end;
+
   RefreshExpenses;
   RefreshIncomes;
 end;
 
 procedure TfrmSummary.RefreshExpenses;
-var
-  Epns: TTransactionsPlus;
 begin
   lblExpenses.Text := 'Expenses';
 
-  if Length(Tns) = 0 then
+  if Length(ExpenseTns) = 0 then
     Exit;
 
-  for var i := 0 to High(Tns) do
-  begin
-    if Tns[i].CatType = TCategoryType.Expense then
-    begin
-      SetLength(Epns, Length(Epns) + 1);
-      Epns[High(Epns)] := Tns[i];
-    end;
-  end;
+  lblExpenses.Text := Format('Expenses (%d)', [Length(ExpenseTns)]);
 
-  lblExpenses.Text := Format('Expenses (%d)', [Length(Epns)]);
-
-  if Length(Epns) = 0 then
+  if Length(ExpenseTns) = 0 then
     Exit;
 
   strGrdExpenses.BeginUpdate;
@@ -107,16 +119,17 @@ begin
     if strGrdExpenses.ColumnCount = 0 then
       SetupExpensesHeaders;
 
-    strGrdExpenses.RowCount := Length(Epns);
+    strGrdExpenses.RowCount := Length(ExpenseTns);
 
-    for var i := 0 to High(Epns) do
+    for var i := 0 to High(ExpenseTns) do
     begin
-      strGrdExpenses.Cells[0, i] := Epns[i].Title;
-      strGrdExpenses.Cells[1, i] := Epns[i].Amount.ToString;
-      strGrdExpenses.Cells[2, i] := Epns[i].FreqQuantity.ToString;
+      strGrdExpenses.Cells[0, i] := ExpenseTns[i].Title;
+      strGrdExpenses.Cells[1, i] := ExpenseTns[i].Amount.ToString;
+      strGrdExpenses.Cells[2, i] := ExpenseTns[i]
+        .FreqQuantity.ToString;
       strGrdExpenses.Cells[3, i] := TTransaction.StringifyFreqUnit
-        (Epns[i].FreqUnit);
-      strGrdExpenses.Cells[4, i] := Epns[i].CatTitle;
+        (ExpenseTns[i].FreqUnit);
+      strGrdExpenses.Cells[4, i] := ExpenseTns[i].CatTitle;
     end;
   finally
     strGrdExpenses.EndUpdate;
@@ -154,26 +167,15 @@ begin
 end;
 
 procedure TfrmSummary.RefreshIncomes;
-var
-  Epns: TTransactionsPlus;
 begin
   lblIncomes.Text := 'Incomes';
 
-  if Length(Tns) = 0 then
+  if Length(IncomeTns) = 0 then
     Exit;
 
-  for var i := 0 to High(Tns) do
-  begin
-    if Tns[i].CatType = TCategoryType.Income then
-    begin
-      SetLength(Epns, Length(Epns) + 1);
-      Epns[High(Epns)] := Tns[i];
-    end;
-  end;
+  lblIncomes.Text := Format('Incomes (%d)', [Length(IncomeTns)]);
 
-  lblIncomes.Text := Format('Incomes (%d)', [Length(Epns)]);
-
-  if Length(Epns) = 0 then
+  if Length(IncomeTns) = 0 then
     Exit;
 
   strGrdIncomes.BeginUpdate;
@@ -184,16 +186,16 @@ begin
     if strGrdIncomes.ColumnCount = 0 then
       SetupIncomesHeaders;
 
-    strGrdIncomes.RowCount := Length(Epns);
+    strGrdIncomes.RowCount := Length(IncomeTns);
 
-    for var i := 0 to High(Epns) do
+    for var i := 0 to High(IncomeTns) do
     begin
-      strGrdIncomes.Cells[0, i] := Epns[i].Title;
-      strGrdIncomes.Cells[1, i] := Epns[i].Amount.ToString;
-      strGrdIncomes.Cells[2, i] := Epns[i].FreqQuantity.ToString;
+      strGrdIncomes.Cells[0, i] := IncomeTns[i].Title;
+      strGrdIncomes.Cells[1, i] := IncomeTns[i].Amount.ToString;
+      strGrdIncomes.Cells[2, i] := IncomeTns[i].FreqQuantity.ToString;
       strGrdIncomes.Cells[3, i] := TTransaction.StringifyFreqUnit
-        (Epns[i].FreqUnit);
-      strGrdIncomes.Cells[4, i] := Epns[i].CatTitle;
+        (IncomeTns[i].FreqUnit);
+      strGrdIncomes.Cells[4, i] := IncomeTns[i].CatTitle;
     end;
   finally
     strGrdIncomes.EndUpdate;
