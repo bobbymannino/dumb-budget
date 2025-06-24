@@ -74,14 +74,22 @@ object frmSummary: TfrmSummary
     OnClick = btnNewClick
   end
   object btnCats: TButton
-    Position.X = 382.000000000000000000
+    Position.X = 416.000000000000000000
     Position.Y = 450.000000000000000000
-    Size.Width = 146.000000000000000000
+    Size.Width = 112.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 4
     Text = 'Categories'
     TextSettings.Trimming = None
     OnClick = btnCatsClick
+  end
+  object btnBackup: TButton
+    Position.X = 328.000000000000000000
+    Position.Y = 450.000000000000000000
+    TabOrder = 7
+    Text = 'Backup'
+    TextSettings.Trimming = None
+    OnClick = btnBackupClick
   end
 end

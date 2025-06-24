@@ -21,6 +21,7 @@ type
     strGrdIncomes: TStringGrid;
     btnNew: TButton;
     btnCats: TButton;
+    btnBackup: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnNewClick(Sender: TObject);
     procedure btnCatsClick(Sender: TObject);
@@ -28,6 +29,7 @@ type
       const Row: Integer);
     procedure strGrdIncomesCellDblClick(const Column: TColumn;
       const Row: Integer);
+    procedure btnBackupClick(Sender: TObject);
   private
     { Private declarations }
     Tns: TTransactionsPlus;
@@ -48,6 +50,11 @@ var
 implementation
 
 {$R *.fmx}
+
+procedure TfrmSummary.btnBackupClick(Sender: TObject);
+begin
+{ TODO : impl }
+end;
 
 procedure TfrmSummary.btnCatsClick(Sender: TObject);
 var
@@ -267,6 +274,7 @@ end;
 { TODO 3 -cFeature : import option }
 { TODO 2 -cFeature : edit category }
 { TODO 2 -cFeature : delete category }
-{ TODO 3 -cFeature : automatic/manual backup }
+{ TODO 1 -cFeature : Show summary of month }
+{ TODO 1 -cFeature : manual backup }
 
 end.

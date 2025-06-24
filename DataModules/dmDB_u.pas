@@ -89,14 +89,21 @@ var
   AppDataPath: string;
   AppFolder: string;
 begin
-  { TODO 1 -cBuild : Add path for macOS }
-  AppDataPath := GetEnvironmentVariable('LOCALAPPDATA');
-
-  if AppDataPath = '' then
-    AppDataPath := GetEnvironmentVariable('APPDATA');
-
   AppFolder := 'DumbBudget';
 
+  // Windows: /Users/<me>/AppData/Local/DumbBudget/Database.db
+  // Mac: /Users/<me>/Application Support/DumbBudget/Database.db
+
+  { DONE 1 -cBuild : Add path for macOS }
+
+{$IFDEF DARWIN}
+  AppDataPath := GetEnvironmentVariable('HOME') +
+    '/Library/Application Support';
+{$ELSE}
+  AppDataPath := GetEnvironmentVariable('LOCALAPPDATA');
+  if AppDataPath = '' then
+    AppDataPath := GetEnvironmentVariable('APPDATA');
+{$ENDIF}
   Result := IncludeTrailingPathDelimiter(AppDataPath) +
     IncludeTrailingPathDelimiter(AppFolder);
 
