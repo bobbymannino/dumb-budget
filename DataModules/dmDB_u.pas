@@ -3,14 +3,15 @@ unit dmDB_u;
 interface
 
 uses
-  System.SysUtils, System.Classes, Data.DB, Data.Win.ADODB, FMX.Dialogs,
+  System.SysUtils, System.Classes, System.RegularExpressions, System.IOUtils,
+  Data.DB, Data.Win.ADODB, FMX.Dialogs,
   FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
   FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
   FireDAC.Phys, FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef,
   FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait,
-  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.VCLUI.Wait,
   FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  objCategory_u, objTransaction_u, FireDAC.VCLUI.Wait;
+  objCategory_u, objTransaction_u;
 
 type
   TdmDB = class(TDataModule)
@@ -20,10 +21,11 @@ type
     procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
-    function GetDatabasePath: string;
     procedure CreateTables;
+    function GetDatabasePath: string;
   public
     { Public declarations }
+    procedure Backup;
     procedure DeleteTransaction(const aTnsID: Integer);
     procedure UpdateTransaction(const aTns: TTransaction);
     procedure CreateTransaction(const aTns: TTransaction);
@@ -84,6 +86,19 @@ begin
   end;
 end;
 
+/// <summary>
+/// Gets the full path to the application's database file.
+/// Creates the directory structure if it doesn't exist.
+/// </summary>
+/// <returns>
+/// Full path to Database.db file in platform-appropriate location:
+/// - Windows: %LOCALAPPDATA%\DumbBudget\Database.db
+/// - macOS: ~/Library/Application Support/DumbBudget/Database.db
+/// </returns>
+/// <remarks>
+/// The function automatically creates the directory structure if it doesn't exist.
+/// Falls back to %APPDATA% on Windows if %LOCALAPPDATA% is not available.
+/// </remarks>
 function TdmDB.GetDatabasePath: string;
 var
   AppDataPath: string;
@@ -261,6 +276,26 @@ begin
   finally
     qryDB.Close;
   end;
+end;
+
+/// <summary>
+/// Create a backup .db file with the current timestamp
+/// </summary>
+procedure TdmDB.Backup;
+var
+  fSourceName, fDestName: string;
+  fSourceF, fDestF: file of Byte;
+  fBlock: Byte;
+begin
+  // 1. Get the current .db file
+  fSourceName := GetDatabasePath;
+
+  // 2. Rename the file to <timestamp>.db
+  fDestName := TRegEx.Replace(fSourceName, 'Database.db$',
+    FormatDateTime('yyyymmddhhnnss', Now) + '.db');
+
+  // 2. Copy the file
+  TFile.Copy(fSourceName, fDestName);
 end;
 
 procedure TdmDB.CreateCategory(const aCat: TCategory);

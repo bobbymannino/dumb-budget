@@ -53,7 +53,7 @@ implementation
 
 procedure TfrmSummary.btnBackupClick(Sender: TObject);
 begin
-{ TODO : impl }
+  dmDB.Backup;
 end;
 
 procedure TfrmSummary.btnCatsClick(Sender: TObject);
@@ -275,6 +275,6 @@ end;
 { TODO 2 -cFeature : edit category }
 { TODO 2 -cFeature : delete category }
 { TODO 1 -cFeature : Show summary of month }
-{ TODO 1 -cFeature : manual backup }
+{ DONE 1 -cFeature : manual backup }
 
 end.
