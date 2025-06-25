@@ -11,7 +11,7 @@ uses
   Data.DB,
   dmDB_u,
   objTransaction_u, objCategory_u,
-  frmNew_u, frmCategories_u, frmEdit_u;
+  frmNew_u, frmCategories_u, frmEdit_u, frmSettings_u;
 
 type
   TfrmSummary = class(TForm)
@@ -21,7 +21,7 @@ type
     strGrdIncomes: TStringGrid;
     btnNew: TButton;
     btnCats: TButton;
-    btnBackup: TButton;
+    btnSettings: TButton;
     procedure FormCreate(Sender: TObject);
     procedure btnNewClick(Sender: TObject);
     procedure btnCatsClick(Sender: TObject);
@@ -30,6 +30,7 @@ type
     procedure strGrdIncomesCellDblClick(const Column: TColumn;
       const Row: Integer);
     procedure btnBackupClick(Sender: TObject);
+    procedure btnSettingsClick(Sender: TObject);
   private
     { Private declarations }
     Tns: TTransactionsPlus;
@@ -68,12 +69,20 @@ end;
 
 procedure TfrmSummary.btnNewClick(Sender: TObject);
 var
-  fFrm: TfrmNew;
+  fFrm: TForm;
 begin
   fFrm := TfrmNew.Create(Self);
   fFrm.ShowModal;
 
   RefreshTransactions;
+end;
+
+procedure TfrmSummary.btnSettingsClick(Sender: TObject);
+var
+  fFrm: TForm;
+begin
+  fFrm := TfrmSettings.Create(Self);
+  fFrm.ShowModal;
 end;
 
 procedure TfrmSummary.FormCreate(Sender: TObject);
@@ -270,11 +279,11 @@ begin
   end;
 end;
 
-{ TODO 3 -cFeature : export option }
-{ TODO 3 -cFeature : import option }
-{ TODO 2 -cFeature : edit category }
-{ TODO 2 -cFeature : delete category }
-{ TODO 1 -cFeature : Show summary of month }
-{ DONE 1 -cFeature : manual backup }
+{ TODO 1 -cFeature : export option (JSON) }
+{ TODO 1 -cFeature : import option (JSON) }
+{ TODO 1 -cFeature : edit category }
+{ TODO 1 -cFeature : delete category }
+{ TODO 2 -cFeature : Show summary of month }
+{ DONE 3 -cFeature : manual backup }
 
 end.

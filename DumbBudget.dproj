@@ -205,6 +205,10 @@
             <Form>frmEdit</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="Forms\frmSettings_u.pas">
+            <Form>frmSettings</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
