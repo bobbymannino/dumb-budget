@@ -10,7 +10,8 @@ uses
   objCategory_u in 'Objects\objCategory_u.pas',
   objTransaction_u in 'Objects\objTransaction_u.pas',
   fmeEditTransaction_u in 'Frames\fmeEditTransaction_u.pas' {fmeEditTransaction: TFrame},
-  frmEdit_u in 'Forms\frmEdit_u.pas' {frmEdit};
+  frmEdit_u in 'Forms\frmEdit_u.pas' {frmEdit},
+  frmSettings_u in 'Forms\frmSettings_u.pas' {frmSettings};
 
 {$R *.res}
 
@@ -21,5 +22,6 @@ begin
   Application.CreateForm(TfrmNew, frmNew);
   Application.CreateForm(TfrmCategories, frmCategories);
   Application.CreateForm(TfrmEdit, frmEdit);
+  Application.CreateForm(TfrmSettings, frmSettings);
   Application.Run;
 end.

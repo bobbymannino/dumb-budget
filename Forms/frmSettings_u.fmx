@@ -1,0 +1,59 @@
+object frmSettings: TfrmSettings
+  Left = 0
+  Top = 0
+  Caption = 'Dumb Budget - Settings'
+  ClientHeight = 362
+  ClientWidth = 370
+  Position = DesktopCenter
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object lblFormTitle: TLabel
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 8.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 354.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'Settings'
+    TabOrder = 0
+  end
+  object btnExport: TButton
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 8.000000000000000000
+    Position.Y = 63.000000000000000000
+    Size.Width = 354.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    Text = 'Export to JSON'
+    TextSettings.Trimming = None
+  end
+  object btnBackup: TButton
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 8.000000000000000000
+    Position.Y = 33.000000000000000000
+    Size.Width = 354.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = 'Backup'
+    TextSettings.Trimming = None
+    OnClick = btnBackupClick
+  end
+  object lblBobman: TLabel
+    Anchors = [akLeft, akRight, akBottom]
+    Position.X = 8.000000000000000000
+    Position.Y = 337.000000000000000000
+    Size.Width = 354.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
+    Text = 'Made with '#10084#65039' by bobman.dev'
+    TabOrder = 3
+    OnClick = lblBobmanClick
+    OnMouseEnter = lblBobmanMouseEnter
+    OnMouseLeave = lblBobmanMouseLeave
+  end
+end

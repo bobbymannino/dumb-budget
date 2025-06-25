@@ -84,12 +84,12 @@ object frmSummary: TfrmSummary
     TextSettings.Trimming = None
     OnClick = btnCatsClick
   end
-  object btnBackup: TButton
+  object btnSettings: TButton
     Position.X = 328.000000000000000000
     Position.Y = 450.000000000000000000
     TabOrder = 7
-    Text = 'Backup'
+    Text = 'Settings'
     TextSettings.Trimming = None
-    OnClick = btnBackupClick
+    OnClick = btnSettingsClick
   end
 end
