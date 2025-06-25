@@ -279,11 +279,8 @@ begin
   end;
 end;
 
-{ TODO 1 -cFeature : export option (JSON) }
-{ TODO 1 -cFeature : import option (JSON) }
 { TODO 1 -cFeature : edit category }
 { TODO 1 -cFeature : delete category }
 { TODO 2 -cFeature : Show summary of month }
-{ DONE 3 -cFeature : manual backup }
 
 end.

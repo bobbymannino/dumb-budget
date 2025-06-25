@@ -44,6 +44,9 @@ object frmSettings: TfrmSettings
   end
   object lblBobman: TLabel
     Anchors = [akLeft, akRight, akBottom]
+    Cursor = crHandPoint
+    StyledSettings = [Family, Size, Style]
+    HitTest = True
     Position.X = 8.000000000000000000
     Position.Y = 337.000000000000000000
     Size.Width = 354.000000000000000000

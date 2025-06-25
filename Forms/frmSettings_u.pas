@@ -55,18 +55,22 @@ begin
 {$IFDEF POSIX}
   _system(PAnsiChar('open ' + AnsiString(fURL)));
 {$ENDIF POSIX}
+  lblBobman.TextSettings.FontColor := TAlphaColorRec.Mediumpurple;
 end;
 
 procedure TfrmSettings.lblBobmanMouseEnter(Sender: TObject);
 begin
-  lblBobman.TextSettings.FontColor := TAlphaColors.Blue;
-
-  ShowMessage('Entered');
+  lblBobman.TextSettings.FontColor := TAlphaColorRec.Blue;
 end;
 
 procedure TfrmSettings.lblBobmanMouseLeave(Sender: TObject);
 begin
-  lblBobman.TextSettings.FontColor := TAlphaColors.Black;
+  lblBobman.TextSettings.FontColor := TAlphaColorRec.Black;
 end;
+
+{ TODO 1 -cFeature : export option (JSON) }
+{ TODO 1 -cFeature : import option (JSON) }
+{ DONE 1 -cUI : Add link to bobman.dev }
+{ DONE 3 -cFeature : manual backup }
 
 end.
