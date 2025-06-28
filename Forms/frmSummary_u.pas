@@ -11,7 +11,7 @@ uses
   Data.DB,
   dmDB_u,
   objTransaction_u, objCategory_u,
-  frmNew_u, frmCategories_u, frmEdit_u, frmSettings_u;
+  frmNew_u, frmCategories_u, frmEdit_u, frmSettings_u, FMX.Layouts;
 
 type
   TfrmSummary = class(TForm)
@@ -22,6 +22,7 @@ type
     btnNew: TButton;
     btnCats: TButton;
     btnSettings: TButton;
+    FlowLayout1: TFlowLayout;
     procedure FormCreate(Sender: TObject);
     procedure btnNewClick(Sender: TObject);
     procedure btnCatsClick(Sender: TObject);

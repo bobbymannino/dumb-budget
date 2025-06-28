@@ -5,7 +5,7 @@ object frmSummary: TfrmSummary
   BorderStyle = Single
   Caption = 'Dumb Budget - Summary'
   ClientHeight = 480
-  ClientWidth = 690
+  ClientWidth = 884
   Position = DesktopCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -16,7 +16,7 @@ object frmSummary: TfrmSummary
     Anchors = [akLeft, akTop, akRight]
     Position.X = 8.000000000000000000
     Position.Y = 8.000000000000000000
-    Size.Width = 674.000000000000000000
+    Size.Width = 868.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Expenses'
@@ -26,7 +26,7 @@ object frmSummary: TfrmSummary
     Anchors = [akLeft, akTop, akRight]
     Position.X = 8.000000000000000000
     Position.Y = 281.000000000000000000
-    Size.Width = 674.000000000000000000
+    Size.Width = 868.000000000000000000
     Size.Height = 17.000000000000000000
     Size.PlatformDefault = False
     Text = 'Incomes'
@@ -38,13 +38,13 @@ object frmSummary: TfrmSummary
     ClipChildren = True
     Position.X = 8.000000000000000000
     Position.Y = 33.000000000000000000
-    Size.Width = 674.000000000000000000
+    Size.Width = 868.000000000000000000
     Size.Height = 240.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
     Options = [ColumnResize, ColLines, RowLines, Tabs, Header, AutoDisplacement]
     OnCellDblClick = strGrdExpensesCellDblClick
-    Viewport.Width = 670.000000000000000000
+    Viewport.Width = 864.000000000000000000
     Viewport.Height = 215.000000000000000000
   end
   object strGrdIncomes: TStringGrid
@@ -53,43 +53,53 @@ object frmSummary: TfrmSummary
     ClipChildren = True
     Position.X = 8.000000000000000000
     Position.Y = 306.000000000000000000
-    Size.Width = 674.000000000000000000
+    Size.Width = 868.000000000000000000
     Size.Height = 136.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 3
     Options = [ColumnResize, ColLines, RowLines, Tabs, Header, AutoDisplacement]
     OnCellDblClick = strGrdIncomesCellDblClick
-    Viewport.Width = 670.000000000000000000
+    Viewport.Width = 864.000000000000000000
     Viewport.Height = 111.000000000000000000
   end
-  object btnNew: TButton
-    Position.X = 536.000000000000000000
+  object FlowLayout1: TFlowLayout
+    Anchors = [akLeft, akTop, akRight]
+    Position.X = 8.000000000000000000
     Position.Y = 450.000000000000000000
-    Size.Width = 146.000000000000000000
+    Size.Width = 868.000000000000000000
     Size.Height = 22.000000000000000000
     Size.PlatformDefault = False
-    TabOrder = 6
-    Text = 'New Income/Expense'
-    TextSettings.Trimming = None
-    OnClick = btnNewClick
-  end
-  object btnCats: TButton
-    Position.X = 416.000000000000000000
-    Position.Y = 450.000000000000000000
-    Size.Width = 112.000000000000000000
-    Size.Height = 22.000000000000000000
-    Size.PlatformDefault = False
-    TabOrder = 5
-    Text = 'Categories'
-    TextSettings.Trimming = None
-    OnClick = btnCatsClick
-  end
-  object btnSettings: TButton
-    Position.X = 328.000000000000000000
-    Position.Y = 450.000000000000000000
     TabOrder = 4
-    Text = 'Settings'
-    TextSettings.Trimming = None
-    OnClick = btnSettingsClick
+    Justify = Left
+    JustifyLastLine = Right
+    FlowDirection = LeftToRight
+    HorizontalGap = 8.000000000000000000
+    object btnSettings: TButton
+      Position.X = 514.000000000000000000
+      TabOrder = 4
+      Text = 'Settings'
+      TextSettings.Trimming = None
+      OnClick = btnSettingsClick
+    end
+    object btnNew: TButton
+      Position.X = 602.000000000000000000
+      Size.Width = 146.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 6
+      Text = 'New Income/Expense'
+      TextSettings.Trimming = None
+      OnClick = btnNewClick
+    end
+    object btnCats: TButton
+      Position.X = 756.000000000000000000
+      Size.Width = 112.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 5
+      Text = 'Categories'
+      TextSettings.Trimming = None
+      OnClick = btnCatsClick
+    end
   end
 end
